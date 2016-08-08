@@ -31,3 +31,6 @@ C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\obj\Debug\MainWindow
 C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\obj\Debug\MidiPlayerTest.g.resources
 C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\obj\Debug\MidiPlayerTest.Properties.Resources.resources
 C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\obj\Debug\MidiPlayerTest.csproj.GenerateResource.Cache
+C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\bin\Debug\PSAMControlLibrary.dll
+C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\bin\Debug\PSAMWPFControlLibrary.dll
+C:\Users\mmaaschu\Documents\GitHub\Midi_demo\MidiPlayerTest\bin\Debug\Resources\example.xml

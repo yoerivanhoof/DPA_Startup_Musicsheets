@@ -1,3 +1,0 @@
-TimeSignature: (4 / 4) 
-Tempo: 105
-EndOfTrack: 

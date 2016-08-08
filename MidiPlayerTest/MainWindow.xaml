@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:PSAMWPFControl="clr-namespace:PSAMWPFControlLibrary;assembly=PSAMWPFControlLibrary"
         xmlns:local="clr-namespace:MidiPlayerTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
-    <Grid>
+        Title="MainWindow" Height="500" Width="525" Closing="Window_Closing">
+    <Grid x:Name="MainGrid">
         <TextBox x:Name="txt_MidiFilePath" HorizontalAlignment="Left" Height="23" Margin="90,10,0,0" TextWrapping="Wrap" Text="../../../smb1-Theme.mid" VerticalAlignment="Top" Width="233"/>
         <Button x:Name="btnPlay" Content="Play" HorizontalAlignment="Left" Margin="353,11,0,0" VerticalAlignment="Top" Width="75" Click="btnPlay_Click"/>
         <Button x:Name="btnOpen" Content="Open" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="75" Click="btnOpen_Click"/>
@@ -39,5 +40,7 @@
         <Button x:Name="btn_Replay" Content="Replay" HorizontalAlignment="Left" Margin="353,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Replay_Click" IsEnabled="False"/>
         <Button x:Name="btn_StopRecord" Content="Stop record" HorizontalAlignment="Left" Margin="273,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_StopRecord_Click" IsEnabled="False"/>
         <Button x:Name="btn_Save" Content="Save" HorizontalAlignment="Left" Margin="433,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Save_Click"/>
+        <PSAMWPFControl:IncipitViewerWPF HorizontalAlignment="Left" Margin="0,300,0,0" Width="525" x:Name="notenbalk" >
+        </PSAMWPFControl:IncipitViewerWPF>
     </Grid>
 </Window>
