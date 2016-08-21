@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace MidiPlayerTest
+namespace DPA_Musicsheets
 {
     public class MidiPlayer : IDisposable
     {

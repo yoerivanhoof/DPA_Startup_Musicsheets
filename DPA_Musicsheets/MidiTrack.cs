@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MidiPlayerTest
+namespace DPA_Musicsheets
 {
-    public class TrackLog
+    public class MidiTrack
     {
         public string TrackName { get; set; }
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();

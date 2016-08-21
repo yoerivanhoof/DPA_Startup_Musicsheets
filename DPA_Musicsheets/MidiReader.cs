@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace MidiPlayerTest
+namespace DPA_Musicsheets
 {
     public static class MidiReader
     {
-        public static IEnumerable<TrackLog> ReadMidi(string midiFileLocation)
+        public static IEnumerable<MidiTrack> ReadMidi(string midiFileLocation)
         {
             var sequence = new Sequence();
             sequence.Load(midiFileLocation);
@@ -18,13 +18,13 @@ namespace MidiPlayerTest
             return ReadSequence(sequence);
         }
 
-        public static IEnumerable<TrackLog> ReadSequence(Sequence sequence)
+        public static IEnumerable<MidiTrack> ReadSequence(Sequence sequence)
         {
             // De sequence heeft tracks. Deze zijn per index benaderbaar.
             for (int i = 0; i < sequence.Count; i++)
             {
                 Track track = sequence[i];
-                TrackLog trackLog = new TrackLog() { TrackName = i.ToString() };
+                MidiTrack trackLog = new MidiTrack() { TrackName = i.ToString() };
 
                 foreach (var midiEvent in track.Iterator())
                 {

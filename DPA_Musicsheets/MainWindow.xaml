@@ -1,10 +1,10 @@
-﻿<Window x:Class="MidiPlayerTest.MainWindow"
+﻿<Window x:Class="DPA_Musicsheets.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:PSAMWPFControl="clr-namespace:PSAMWPFControlLibrary;assembly=PSAMWPFControlLibrary"
-        xmlns:local="clr-namespace:MidiPlayerTest"
+        xmlns:local="clr-namespace:DPA_Musicsheets"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="525" Closing="Window_Closing">
     <Grid x:Name="MainGrid">
@@ -36,11 +36,7 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <Button x:Name="btn_Record" Content="Record" HorizontalAlignment="Left" Margin="193,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Record_Click"/>
-        <Button x:Name="btn_Replay" Content="Replay" HorizontalAlignment="Left" Margin="353,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Replay_Click" IsEnabled="False"/>
-        <Button x:Name="btn_StopRecord" Content="Stop record" HorizontalAlignment="Left" Margin="273,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_StopRecord_Click" IsEnabled="False"/>
-        <Button x:Name="btn_Save" Content="Save" HorizontalAlignment="Left" Margin="433,291,0,0" VerticalAlignment="Top" Width="75" Click="btn_Save_Click"/>
-        <PSAMWPFControl:IncipitViewerWPF HorizontalAlignment="Left" Margin="0,300,0,0" Width="525" x:Name="notenbalk" >
+        <PSAMWPFControl:IncipitViewerWPF HorizontalAlignment="Left" Margin="0,300,0,0" Width="525" x:Name="staff" >
         </PSAMWPFControl:IncipitViewerWPF>
     </Grid>
 </Window>
