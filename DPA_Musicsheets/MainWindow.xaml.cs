@@ -27,7 +27,7 @@ namespace DPA_Musicsheets
     public partial class MainWindow : Window
     {
         private MidiPlayer _player;
-        public ObservableCollection<MidiTrack> MidiTracks { get; } = new ObservableCollection<MidiTrack>();
+        public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
 
         // De OutputDevice is een midi device of het midikanaal van je PC.
         // Hierop gaan we audio streamen.
@@ -36,6 +36,7 @@ namespace DPA_Musicsheets
 
         public MainWindow()
         {
+            this.MidiTracks = new ObservableCollection<MidiTrack>();
             InitializeComponent();
             DataContext = MidiTracks;
             FillPSAMViewer();
