@@ -2269,12 +2269,29 @@
             The name of the MIDI file to load.
             </param>
         </member>
+        <member name="M:Sanford.Multimedia.Midi.Sequence.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the Sequence class with the specified
+            file stream of the MIDI file to load.
+            </summary>
+            <param name="fileStream">
+            The stream of the MIDI file to load.
+            </param>
+        </member>
         <member name="M:Sanford.Multimedia.Midi.Sequence.Load(System.String)">
             <summary>
             Loads a MIDI file into the Sequence.
             </summary>
             <param name="fileName">
             The MIDI file's name.
+            </param>
+        </member>
+        <member name="M:Sanford.Multimedia.Midi.Sequence.Load(System.IO.Stream)">
+            <summary>
+            Loads a MIDI stream into the Sequence.
+            </summary>
+            <param name="fileStream">
+            The MIDI file's stream.
             </param>
         </member>
         <member name="M:Sanford.Multimedia.Midi.Sequence.Save(System.String)">
