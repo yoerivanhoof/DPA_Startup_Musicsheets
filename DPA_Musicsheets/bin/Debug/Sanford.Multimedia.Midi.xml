@@ -65,6 +65,12 @@
             specified device ID.
             </summary>
         </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDevice.MessageReceived">
+            <summary>
+            Occurs when any message was received. The underlying type of the message is as specific as possible.
+            Channel, Common, Realtime or SysEx.
+            </summary>
+        </member>
         <member name="T:Sanford.Multimedia.Midi.InputDeviceException">
             <summary>
             The exception that is thrown when a error occurs with the InputDevice
@@ -333,11 +339,55 @@
             Gets a message that describes the current exception.
             </summary>
         </member>
-        <member name="F:Sanford.Multimedia.Midi.MidiEventArgsBase.DeltaFrames">
+        <member name="T:Sanford.Multimedia.Midi.ShortMessageEventArgs">
             <summary>
-            Delta samples when the event should be processed in the next audio buffer.
-            Leave at 0 for realtime input to play as fast as possible.
-            Set to the desired sample in the next buffer if you play a midi sequence synchronized to the audio callback
+            Raw short message as int or byte array, useful when working with VST.
+            </summary>
+        </member>
+        <member name="T:Sanford.Multimedia.Midi.InputDeviceMidiEvents">
+            <summary>
+            MidiSignal provides all midi events from an input device
+            </summary>
+        </member>
+        <member name="M:Sanford.Multimedia.Midi.InputDeviceMidiEvents.#ctor(Sanford.Multimedia.Midi.InputDevice)">
+            <summary>
+            Create Midisignal with an input device which fires the events
+            </summary>
+            <param name="inDevice"></param>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.MessageReceived">
+            <summary>
+            All incoming midi messages in short format
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.ShortMessageReceived">
+            <summary>
+            All incoming midi messages in short format
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.ChannelMessageReceived">
+            <summary>
+            Channel messages like, note, controller, program, ...
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.SysExMessageReceived">
+            <summary>
+            SysEx messages
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.SysCommonMessageReceived">
+            <summary>
+            Midi timecode, song position, song select, tune request
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.InputDeviceMidiEvents.SysRealtimeMessageReceived">
+            <summary>
+            Timing events, midi clock, start, stop, reset, active sense, tick
+            </summary>
+        </member>
+        <member name="T:Sanford.Multimedia.Midi.MergeMidiEvents">
+            <summary>
+            Takes a number of MidiEvents and merges them into a new single MidiEvent source
             </summary>
         </member>
         <member name="T:Sanford.Multimedia.Midi.KeySignatureBuilder">
@@ -960,6 +1010,13 @@
         <member name="P:Sanford.Multimedia.Midi.IMidiMessage.MessageType">
             <summary>
             Gets the MIDI event's type.
+            </summary>
+        </member>
+        <member name="P:Sanford.Multimedia.Midi.IMidiMessage.DeltaFrames">
+            <summary>
+            Delta samples when the event should be processed in the next audio buffer.
+            Leave at 0 for realtime input to play as fast as possible.
+            Set to the desired sample in the next buffer if you play a midi sequence synchronized to the audio callback
             </summary>
         </member>
         <member name="T:Sanford.Multimedia.Midi.ChannelMessageBuilder">
@@ -1776,6 +1833,65 @@
             Gets the MetaMessage's MessageType.
             </summary>
         </member>
+        <member name="T:Sanford.Multimedia.Midi.MidiEvents">
+            <summary>
+            An event source that combines all possible midi events
+            </summary>
+        </member>
+        <member name="P:Sanford.Multimedia.Midi.MidiEvents.DeviceID">
+            <summary>
+            Gets the device identifier of the input devive.
+            Set it to any negative value for custom event sources.
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.MessageReceived">
+            <summary>
+            Occurs when any message was received. The underlying type of the message should be as specific as possible.
+            Channel, Common, Realtime or SysEx.
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.ShortMessageReceived">
+            <summary>
+            All incoming midi short messages 
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.ChannelMessageReceived">
+            <summary>
+            Channel messages like, note, controller, program, ...
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.SysExMessageReceived">
+            <summary>
+            SysEx messages
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.SysCommonMessageReceived">
+            <summary>
+            Midi timecode, song position, song select, tune request
+            </summary>
+        </member>
+        <member name="E:Sanford.Multimedia.Midi.MidiEvents.SysRealtimeMessageReceived">
+            <summary>
+            Timing events, midi clock, start, stop, reset, active sense, tick
+            </summary>
+        </member>
+        <member name="T:Sanford.Multimedia.Midi.OutputDeviceEventSink">
+            <summary>
+            Event sink that sends midi messages to an output device
+            </summary>
+        </member>
+        <member name="M:Sanford.Multimedia.Midi.OutputDeviceEventSink.Dispose">
+            <summary>
+            Disposes the underying output device and removes the events from the source
+            </summary>
+        </member>
+        <member name="P:Sanford.Multimedia.Midi.MidiMessageBase.DeltaFrames">
+            <summary>
+            Delta samples when the event should be processed in the next audio buffer.
+            Leave at 0 for realtime input to play as fast as possible.
+            Set to the desired sample in the next buffer if you play a midi sequence synchronized to the audio callback
+            </summary>
+        </member>
         <member name="T:Sanford.Multimedia.Midi.ShortMessage">
             <summary>
             Represents the basic class for all MIDI short messages.
@@ -2300,6 +2416,14 @@
             </summary>
             <param name="fileName">
             The name to use for saving the MIDI file.
+            </param>
+        </member>
+        <member name="M:Sanford.Multimedia.Midi.Sequence.Save(System.IO.Stream)">
+            <summary>
+            Saves the Sequence as a Stream.
+            </summary>
+            <param name="stream">
+            The stream to use for saving the sequence.
             </param>
         </member>
         <member name="M:Sanford.Multimedia.Midi.Sequence.GetLength">
