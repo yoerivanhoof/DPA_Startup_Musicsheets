@@ -491,7 +491,7 @@ namespace DPA_Musicsheets.Managers
                         double absoluteLength = 1.0 / (double)note.Duration;
                         absoluteLength += (absoluteLength / 2.0) * note.NumberOfDots;
 
-                        double relationToQuartNote = _beatNote / 4;
+                        double relationToQuartNote = _beatNote / 4.0;
                         double percentageOfBeatNote = (1.0 / _beatNote) / absoluteLength;
                         double deltaTicks = (sequence.Division / relationToQuartNote) / percentageOfBeatNote;
 
