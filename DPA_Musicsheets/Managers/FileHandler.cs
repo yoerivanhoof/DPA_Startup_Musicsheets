@@ -35,8 +35,8 @@ namespace DPA_Musicsheets.Managers
         public event EventHandler<WPFStaffsEventArgs> WPFStaffsChanged;
         public event EventHandler<MidiSequenceEventArgs> MidiSequenceChanged;
 
-        private int _beatNote;        // De waarde van een beatnote.
-        private int _bpm;             // Aantal beatnotes per minute.
+        private int _beatNote = 4;    // De waarde van een beatnote.
+        private int _bpm = 120;       // Aantal beatnotes per minute.
         private int _beatsPerBar;     // Aantal beatnotes per maat.
 
         public void OpenFile(string fileName)
