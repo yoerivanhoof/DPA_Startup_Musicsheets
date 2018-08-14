@@ -164,6 +164,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Files\Eenvoudige voorbeeldfiles\Doorklinken.pdf" />
+    <None Include="Files\Eenvoudige voorbeeldfiles\Keywords.pdf" />
+    <None Include="Files\Eenvoudige voorbeeldfiles\Maatwissel.pdf" />
+    <None Include="Files\Eenvoudige voorbeeldfiles\Nootlengten.pdf" />
+    <None Include="Files\Eenvoudige voorbeeldfiles\Punten.pdf" />
+    <None Include="Files\Eenvoudige voorbeeldfiles\Standaard_noten.pdf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -202,6 +208,19 @@
     <None Include="Files\Twee-emmertjes-water-halen_ZonderHerhalingMaatwisseling.ly">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Doorklinken.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Herhaling_metAlternatief.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Keywords.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\KommasApostrof.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Maatstrepen.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Maatwissel.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Mollen_Kruizen.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Nootlengten.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Punten.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Rusten.ly" />
+    <Content Include="Files\Eenvoudige voorbeeldfiles\Standaard_noten.ly" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
