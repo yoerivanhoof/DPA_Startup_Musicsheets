@@ -103,11 +103,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Managers\MidiSequenceEventArgs.cs" />
-    <Compile Include="Managers\WPFStaffsEventArgs.cs" />
-    <Compile Include="Managers\LilypondEventArgs.cs" />
-    <Compile Include="Messages\CurrentStateMessage.cs" />
-    <Compile Include="Managers\FileHandler.cs" />
+    <Compile Include="Managers\MidiToLilyHelper.cs" />
+    <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />

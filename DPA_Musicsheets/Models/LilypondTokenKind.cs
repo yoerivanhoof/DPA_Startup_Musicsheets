@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models
 {
+    /// <summary>
+    /// These enums will be needed when loading an Lilypond file.
+    /// These are the types we currently support. It is not an exhausted list.
+    /// </summary>
     public enum LilypondTokenKind
     {
         Unknown,
@@ -15,6 +19,10 @@ namespace DPA_Musicsheets.Models
         Clef,
         Time,
         Tempo,
-        Staff
+        Staff,
+        Repeat,
+        Alternative,
+        SectionStart,
+        SectionEnd
     }
 }

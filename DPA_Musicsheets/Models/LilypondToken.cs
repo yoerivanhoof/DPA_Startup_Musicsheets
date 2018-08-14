@@ -14,5 +14,11 @@ namespace DPA_Musicsheets.Models
         public LilypondToken NextToken { get; set; }
 
         public LilypondToken PreviousToken { get; set; }
+
+        /// <summary>
+        /// This can be used to print our list and quickly see what it contains.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => $"Lilypondtoken: {TokenKind} - {Value}";
     }
 }

@@ -1,5 +1,4 @@
 ﻿using DPA_Musicsheets.Managers;
-using DPA_Musicsheets.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
@@ -31,6 +30,10 @@ namespace DPA_Musicsheets.ViewModels
             }
         }
 
+        /// <summary>
+        /// The current state can be used to display some text.
+        /// "Rendering..." is a text that will be displayed for example.
+        /// </summary>
         private string _currentState;
         public string CurrentState
         {
@@ -38,14 +41,13 @@ namespace DPA_Musicsheets.ViewModels
             set { _currentState = value; RaisePropertyChanged(() => CurrentState); }
         }
 
-        private FileHandler _fileHandler;
+        private MusicLoader _musicLoader;
 
-        public MainViewModel(FileHandler fileHandler)
+        public MainViewModel(MusicLoader musicLoader)
         {
-            _fileHandler = fileHandler;
+            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer?
+            _musicLoader = musicLoader;
             FileName = @"Files/Alle-eendjes-zwemmen-in-het-water.mid";
-
-            MessengerInstance.Register<CurrentStateMessage>(this, (message) => CurrentState = message.State);
         }
 
         public ICommand OpenFileCommand => new RelayCommand(() =>
@@ -56,11 +58,13 @@ namespace DPA_Musicsheets.ViewModels
                 FileName = openFileDialog.FileName;
             }
         });
+
         public ICommand LoadCommand => new RelayCommand(() =>
         {
-            _fileHandler.OpenFile(FileName);
+            _musicLoader.OpenFile(FileName);
         });
-        
+
+        #region Focus and key commands, these can be used for implementing hotkeys
         public ICommand OnLostFocusCommand => new RelayCommand(() =>
         {
             Console.WriteLine("Maingrid Lost focus");
@@ -80,5 +84,6 @@ namespace DPA_Musicsheets.ViewModels
         {
             ViewModelLocator.Cleanup();
         });
+        #endregion Focus and key commands, these can be used for implementing hotkeys
     }
 }
