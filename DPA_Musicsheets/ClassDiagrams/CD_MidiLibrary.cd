@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="Tracks worden op deze manier uit sequences gehaald:&#xD;&#xA;&#xD;&#xA;Track t = Sequence[i]&#xD;&#xA;&#xD;&#xA;">
+    <Position X="2.324" Y="3.898" Height="1.384" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Track.Iterator() returnt een IEnumerable van events&#xD;&#xA;&#xD;&#xA;">
+    <Position X="6.188" Y="3.783" Height="0.665" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Aan de hand van MessageType kan bepaald worden of het een channel of metamessage is.">
+    <Position X="11.126" Y="0.5" Height="0.665" Width="3.512" />
+  </Comment>
+  <Comment CommentText="ChannelMessage implementeert ook IMidiMessage">
+    <Position X="8.011" Y="4.802" Height="0.665" Width="1.929" />
+  </Comment>
+  <Comment CommentText="Data1 is de toon&#xD;&#xA;Data2 is intensiteit (0 tot 100 % geluidssterkte)">
+    <Position X="7.688" Y="5.823" Height="0.746" Width="2.21" />
+  </Comment>
+  <Comment CommentText="De sequencer kan afspelen, je krijgt elke keer een channelmessageplayed event. Dit kan je doorspelen naar je outputdevice.">
+    <Position X="2.834" Y="7" Height="0.665" Width="3.169" />
+  </Comment>
+  <Class Name="Sanford.Multimedia.Midi.Sequence">
+    <Position X="0.5" Y="1.25" Width="2.5" />
+    <Members>
+      <Method Name="Add" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="Contains" Hidden="true" />
+      <Method Name="CopyTo" Hidden="true" />
+      <Property Name="Count" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Event Name="Disposed" Hidden="true" />
+      <Property Name="Format" Hidden="true" />
+      <Method Name="GetEnumerator" Hidden="true" />
+      <Method Name="GetLength" Hidden="true" />
+      <Property Name="IsBusy" Hidden="true" />
+      <Property Name="IsReadOnly" Hidden="true" />
+      <Method Name="Load" Hidden="true" />
+      <Method Name="LoadAsync" Hidden="true" />
+      <Method Name="LoadAsyncCancel" Hidden="true" />
+      <Event Name="LoadCompleted" Hidden="true" />
+      <Event Name="LoadProgressChanged" Hidden="true" />
+      <Method Name="Remove" Hidden="true" />
+      <Event Name="SaveCompleted" Hidden="true" />
+      <Event Name="SaveProgressChanged" Hidden="true" />
+      <Method Name="Sequence" Hidden="true" />
+      <Property Name="SequenceType" Hidden="true" />
+      <Property Name="Site" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.Track">
+    <Position X="3.75" Y="1.25" Width="3.25" />
+    <Members>
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="DispatcherIterator" Hidden="true" />
+      <Method Name="GetMidiEvent" Hidden="true" />
+      <Method Name="Merge" Hidden="true" />
+      <Method Name="Move" Hidden="true" />
+      <Method Name="RemoveAt" Hidden="true" />
+      <Method Name="Test" Hidden="true" />
+      <Method Name="TickIterator" Hidden="true" />
+      <Method Name="Track" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.MetaMessage">
+    <Position X="14.5" Y="3.25" Width="2.25" />
+    <Members>
+      <Field Name="EndOfTrackMessage" Hidden="true" />
+      <Method Name="Equals" Hidden="true" />
+      <Method Name="GetHashCode" Hidden="true" />
+      <Field Name="KeySigLength" Hidden="true" />
+      <Method Name="MetaMessage" Hidden="true" />
+      <Field Name="SmpteOffsetLength" Hidden="true" />
+      <Field Name="TempoLength" Hidden="true" />
+      <Field Name="TimeSigLength" Hidden="true" />
+    </Members>
+    <AssociationLine Name="MetaType" Type="Sanford.Multimedia.Midi.MetaType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="4.374" />
+        <Point X="17.125" Y="4.374" />
+        <Point X="17.125" Y="4.5" />
+        <Point X="17.75" Y="4.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MessageType" Type="Sanford.Multimedia.Midi.MessageType">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.276" Y="1.501" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Field Name="EndOfTrackMessage" />
+      <Property Name="MetaType" />
+      <Property Name="MessageType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.ChannelMessage">
+    <Position X="10" Y="3.25" Width="3.5" />
+    <Members>
+      <Method Name="ChannelMessage" Hidden="true" />
+      <Method Name="Equals" Hidden="true" />
+      <Method Name="GetHashCode" Hidden="true" />
+    </Members>
+    <AssociationLine Name="MessageType" Type="Sanford.Multimedia.Midi.MessageType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.5" Y="3.873" />
+        <Point X="13.74" Y="3.873" />
+        <Point X="13.74" Y="2.513" />
+        <Point X="14.91" Y="2.513" />
+        <Point X="14.91" Y="2.125" />
+        <Point X="15.25" Y="2.125" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.19" Y="0.372" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="MessageType" />
+      <Property Name="Command" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.OutputDevice">
+    <Position X="5.5" Y="7.75" Width="2.25" />
+    <Members>
+      <Method Name="Close" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="OutputDevice" Hidden="true" />
+      <Method Name="Reset" Hidden="true" />
+      <Property Name="RunningStatusEnabled" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.Sequencer">
+    <Position X="0.5" Y="7.75" Width="4.5" />
+    <Members>
+      <Method Name="Finalize" Hidden="true" />
+      <Event Name="Chased" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Event Name="Disposed" Hidden="true" />
+      <Event Name="MetaMessagePlayed" Hidden="true" />
+      <Method Name="OnDisposed" Hidden="true" />
+      <Method Name="OnPlayingCompleted" Hidden="true" />
+      <Property Name="Position" Hidden="true" />
+      <Method Name="Sequencer" Hidden="true" />
+      <Property Name="Site" Hidden="true" />
+      <Event Name="SysExMessagePlayed" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Sequence" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.MidiEvent">
+    <Position X="8.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="MidiMessage" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Sanford.Multimedia.Midi.IMidiMessage">
+    <Position X="12.75" Y="1.25" Width="2" />
+    <Members>
+      <Property Name="DeltaFrames" Hidden="true" />
+      <Property Name="Status" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="MessageType" />
+    </ShowAsAssociation>
+  </Interface>
+  <Enum Name="Sanford.Multimedia.Midi.MessageType">
+    <Position X="15.25" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="Short" Hidden="true" />
+      <Field Name="SystemCommon" Hidden="true" />
+      <Field Name="SystemExclusive" Hidden="true" />
+      <Field Name="SystemRealtime" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Sanford.Multimedia.Midi.MetaType">
+    <Position X="17.75" Y="3.75" Width="1.5" />
+    <Members>
+      <Field Name="Copyright" Hidden="true" />
+      <Field Name="CuePoint" Hidden="true" />
+      <Field Name="DeviceName" Hidden="true" />
+      <Field Name="InstrumentName" Hidden="true" />
+      <Field Name="KeySignature" Hidden="true" />
+      <Field Name="Lyric" Hidden="true" />
+      <Field Name="Marker" Hidden="true" />
+      <Field Name="ProgramName" Hidden="true" />
+      <Field Name="ProprietaryEvent" Hidden="true" />
+      <Field Name="SequenceNumber" Hidden="true" />
+      <Field Name="SmpteOffset" Hidden="true" />
+      <Field Name="Text" Hidden="true" />
+      <Field Name="TrackName" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Sanford.Multimedia.Midi.ChannelCommand">
+    <Position X="11" Y="5.75" Width="2" />
+    <Members>
+      <Field Name="ChannelPressure" Hidden="true" />
+      <Field Name="Controller" Hidden="true" />
+      <Field Name="PitchWheel" Hidden="true" />
+      <Field Name="PolyPressure" Hidden="true" />
+      <Field Name="ProgramChange" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

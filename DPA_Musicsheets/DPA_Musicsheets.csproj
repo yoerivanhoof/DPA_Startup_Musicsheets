@@ -164,18 +164,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagrams\CD_DPA_Musicsheets.cd" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Doorklinken.pdf" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Keywords.pdf" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Maatwissel.pdf" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Nootlengten.pdf" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Punten.pdf" />
     <None Include="Files\Eenvoudige voorbeeldfiles\Standaard_noten.pdf" />
+    <None Include="ClassDiagrams\CD_MidiLibrary.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ClassDiagrams\CD_PSAMStaffsLibrary.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

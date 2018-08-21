@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="DPA_Musicsheets.Models.LilypondToken">
+    <Position X="12" Y="12" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAEAAAAAAAAIAAAAAAAAAAgAAAAAgA=</HashCode>
+      <FileName>Models\LilypondToken.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TokenKind" />
+      <Property Name="NextToken" />
+      <Property Name="PreviousToken" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DPA_Musicsheets.Managers.MidiToLilyHelper">
+    <Position X="7.75" Y="9.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Managers\MidiToLilyHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DPA_Musicsheets.Managers.MusicLoader">
+    <Position X="11" Y="6.5" Width="4" />
+    <AssociationLine Name="LilypondViewModel" Type="DPA_Musicsheets.ViewModels.LilypondViewModel" FixedFromPoint="true">
+      <Path>
+        <Point X="11" Y="7.186" />
+        <Point X="7.25" Y="7.186" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MidiPlayerViewModel" Type="DPA_Musicsheets.ViewModels.MidiPlayerViewModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.562" Y="6.5" />
+        <Point X="11.562" Y="5.375" />
+        <Point X="10" Y="5.375" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAAQACAAACAAABCACBBAAKACIICACEAAAgCABAAAAAA=</HashCode>
+      <FileName>Managers\MusicLoader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LilypondViewModel" />
+      <Property Name="MainViewModel" />
+      <Property Name="MidiPlayerViewModel" />
+      <Property Name="StaffsViewModel" />
+      <Property Name="MidiSequence" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="WPFStaffs" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DPA_Musicsheets.ViewModels.LilypondViewModel">
+    <Position X="3.75" Y="2.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAABICAAAAAKQAAAAAAAIACAAIAAIAIIAAAAAAAEAAk=</HashCode>
+      <FileName>ViewModels\LilypondViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DPA_Musicsheets.ViewModels.MainViewModel">
+    <Position X="0.5" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACABQAIAAAACAABAAAAAIAAAAAAABAEBE=</HashCode>
+      <FileName>ViewModels\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DPA_Musicsheets.ViewModels.MidiPlayerViewModel">
+    <Position X="7.5" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAgAAAAAAQAAAIAAAAAAAABAAAEBEARA=</HashCode>
+      <FileName>ViewModels\MidiPlayerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DPA_Musicsheets.ViewModels.StaffsViewModel">
+    <Position X="10.25" Y="2.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\StaffsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DPA_Musicsheets.ViewModels.ViewModelLocator">
+    <Position X="6.25" Y="0.5" Width="2.5" />
+    <AssociationLine Name="MidiPlayerViewModel" Type="DPA_Musicsheets.ViewModels.MidiPlayerViewModel" FixedFromPoint="true">
+      <Path>
+        <Point X="8.438" Y="1.796" />
+        <Point X="8.438" Y="2.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACBAAACAAAAAACAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ViewModels\ViewModelLocator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LilypondViewModel" />
+      <Property Name="MainViewModel" />
+      <Property Name="MidiPlayerViewModel" />
+      <Property Name="StaffsViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PSAMControlLibrary.MusicalSymbol" Collapsed="true">
+    <Position X="17.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Sanford.Multimedia.Midi.Sequence" Collapsed="true">
+    <Position X="17.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="DPA_Musicsheets.Models.LilypondTokenKind">
+    <Position X="16.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAgAAAAAAAAAAAAAECAAAAAAEAIgAAEACRA=</HashCode>
+      <FileName>Models\LilypondTokenKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
