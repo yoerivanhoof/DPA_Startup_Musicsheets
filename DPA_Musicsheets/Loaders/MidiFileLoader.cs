@@ -5,9 +5,9 @@ namespace DPA_Musicsheets.Loaders
     public class MidiFileLoader : FileLoader
     {
         public override string FileExtension => ".mid";
-        public override void Load()
+        public override void Load(string fileName)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public override Music GetMusic()

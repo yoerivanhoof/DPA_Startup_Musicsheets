@@ -15,4 +15,5 @@ namespace DPA_Musicsheets.Builders
         {
             return _timesignature;
         }
+    }
 }
