@@ -12,6 +12,12 @@ namespace DPA_Musicsheets.Builders
             _note = new Note();
         }
 
+        public void MakePreparedKey()
+        {
+            _note.Pitch = Pitch.C;
+            _note.Modifier = Modifier.Up;
+        }
+
         public void SetPitch(Pitch pitch)
         {
             _note.Pitch = pitch;

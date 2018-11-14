@@ -67,16 +67,15 @@ namespace DPA_Musicsheets.Loaders
                                     {
                                         // Finish the last notelength.
                                         double percentageOfBar;
-                                    //    lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
-                                      //  lilypondContent.Append(" ");
-
-                                    //    percentageOfBarReached += percentageOfBar;
+                                     //   lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
+                                        MusicBuilder.AddSymbol(noteBuilder.GetNote());
+                                      //  percentageOfBarReached += percentageOfBar;
                                         if (percentageOfBarReached >= 1)
                                         {
                                             var barlineBuilder = new BarlineBuilder();
                                             barlineBuilder.Init();
                                             MusicBuilder.AddSymbol(barlineBuilder.GetBarline());
-                                      //      percentageOfBar = percentageOfBar - 1;
+                                        //    percentageOfBar = percentageOfBar - 1;
                                         }
                                     }
                                     break;
@@ -90,7 +89,8 @@ namespace DPA_Musicsheets.Loaders
                                 {
                                     // Append the new note.
                                     noteBuilder.Init();
-                                  //  lilypondContent.Append(MidiToLilyHelper.GetLilyNoteName(previousMidiKey, channelMessage.Data1));
+
+                               //     lilypondContent.Append(MidiToLilyHelper.GetLilyNoteName(previousMidiKey, channelMessage.Data1));
 
                                     previousMidiKey = channelMessage.Data1;
                                     startedNoteIsClosed = false;
