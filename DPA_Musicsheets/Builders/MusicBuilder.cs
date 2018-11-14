@@ -13,7 +13,7 @@ namespace DPA_Musicsheets.Builders
             _music = new Music();
         }
 
-        public void SetPitch(Pitch key)
+        public void SetPitch(Note key)
         {
             _music.Key = key;
         }
