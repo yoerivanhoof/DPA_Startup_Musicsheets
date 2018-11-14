@@ -2,7 +2,7 @@
 {
     public enum Clef
     {
-        Treble,
-        Bass
+        TREBLE,
+        BASS
     }
 }
