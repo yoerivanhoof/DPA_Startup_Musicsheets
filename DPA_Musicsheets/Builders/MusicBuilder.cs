@@ -33,6 +33,15 @@ namespace DPA_Musicsheets.Builders
             _music.Symbols = symbols;
         }
 
+        public void AddSymbol(IMusicSymbol symbol)
+        {
+            if (_music.Symbols == null)
+            {
+                _music.Symbols = new List<IMusicSymbol>();
+            }
+            _music.Symbols.Add(symbol);
+        }
+
         public Music GetMusic()
         {
             return _music;
