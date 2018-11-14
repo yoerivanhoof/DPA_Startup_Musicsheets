@@ -1,6 +1,6 @@
 ﻿namespace DPA_Musicsheets.MusicDomain.Symbols
 {
-    public class Timesignature : IMusicSymbol
+    public class TimeSignature : IMusicSymbol
     {
         
     }

@@ -103,6 +103,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Builders\AbstractBuilder.cs" />
+    <Compile Include="Builders\BarlineBuilder.cs" />
+    <Compile Include="Builders\MusicBuilder.cs" />
+    <Compile Include="Builders\NoteBuilder.cs" />
+    <Compile Include="Builders\SequenceEndBuilder.cs" />
+    <Compile Include="Builders\SequenceStartBuilder.cs" />
+    <Compile Include="Builders\TimeSignatureBuilder.cs" />
+    <Compile Include="Loaders\FileLoader.cs" />
+    <Compile Include="Loaders\LilyFileLoader.cs" />
+    <Compile Include="Loaders\LoaderFactory.cs" />
+    <Compile Include="Loaders\MidiFileLoader.cs" />
     <Compile Include="Managers\MidiToLilyHelper.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\LilypondToken.cs" />
@@ -116,7 +127,7 @@
     <Compile Include="MusicDomain\Pitch.cs" />
     <Compile Include="MusicDomain\Symbols\SequenceEnd.cs" />
     <Compile Include="MusicDomain\Symbols\SequenceStart.cs" />
-    <Compile Include="MusicDomain\Symbols\Timesignature.cs" />
+    <Compile Include="MusicDomain\Symbols\TimeSignature.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />
     <Compile Include="ViewModels\StaffsViewModel.cs" />
     <Compile Include="Views\MidiPlayerCtrl.xaml.cs">
