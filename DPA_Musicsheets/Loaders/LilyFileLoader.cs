@@ -10,9 +10,5 @@ namespace DPA_Musicsheets.Loaders
             throw new System.NotImplementedException();
         }
 
-        public override Music GetMusic()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
