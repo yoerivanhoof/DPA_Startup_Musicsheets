@@ -5,6 +5,8 @@ using System.Text;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
+using Sanford.Multimedia.Midi;
+using TimeSignatureBuilder = DPA_Musicsheets.Builders.TimeSignatureBuilder;
 
 namespace DPA_Musicsheets.Loaders
 {
@@ -53,15 +55,23 @@ namespace DPA_Musicsheets.Loaders
                 }
                 else if (lily[i].Contains("time"))
                 {
-
+                    TimeSignatureBuilder builder = new TimeSignatureBuilder();
+                    builder.Init();
+                    builder.SetBeats(int.Parse(lily[i+1].Split('/')[0]));
+                    builder.SetBeatsPerBar(int.Parse(lily[i + 1].Split('/')[1]));
+                    MusicBuilder.AddSymbol(builder.GetTimeSignature());
+                    i++;
                 }
                 else if (lily[i].Contains("tempo"))
                 {
-
+                    MusicBuilder.SetTempo(int.Parse(lily[i+1].Split('=')[1]));
+                    i++;
                 }
                 else if(lily.Contains("{"))
                 {
-                   
+                    SequenceStartBuilder builder = new SequenceStartBuilder();
+                    builder.Init();
+                    MusicBuilder.AddSymbol(builder.GetSequenceStart());
                 }
             }
 
