@@ -22,8 +22,11 @@ namespace DPA_Musicsheets.Loaders
         private void LoadMusic(Sequence sequence)
         {
             MusicBuilder.Init();
-            MusicBuilder.SetPitch(Pitch.C);
-            MusicBuilder.SetClef(Clef.Treble);
+            var pitchNoteBuilder = new NoteBuilder();
+            pitchNoteBuilder.Init();
+            pitchNoteBuilder.MakePreparedKey();
+            MusicBuilder.SetPitch(pitchNoteBuilder.GetNote());
+            MusicBuilder.SetClef(Clef.TREBLE);
 
 
             int division = sequence.Division;
@@ -67,16 +70,15 @@ namespace DPA_Musicsheets.Loaders
                                     {
                                         // Finish the last notelength.
                                         double percentageOfBar;
-                                    //    lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
-                                      //  lilypondContent.Append(" ");
-
-                                    //    percentageOfBarReached += percentageOfBar;
+                                     //   lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
+                                        MusicBuilder.AddSymbol(noteBuilder.GetNote());
+                                      //  percentageOfBarReached += percentageOfBar;
                                         if (percentageOfBarReached >= 1)
                                         {
                                             var barlineBuilder = new BarlineBuilder();
                                             barlineBuilder.Init();
                                             MusicBuilder.AddSymbol(barlineBuilder.GetBarline());
-                                      //      percentageOfBar = percentageOfBar - 1;
+                                        //    percentageOfBar = percentageOfBar - 1;
                                         }
                                     }
                                     break;
@@ -90,7 +92,8 @@ namespace DPA_Musicsheets.Loaders
                                 {
                                     // Append the new note.
                                     noteBuilder.Init();
-                                  //  lilypondContent.Append(MidiToLilyHelper.GetLilyNoteName(previousMidiKey, channelMessage.Data1));
+
+                               //     lilypondContent.Append(MidiToLilyHelper.GetLilyNoteName(previousMidiKey, channelMessage.Data1));
 
                                     previousMidiKey = channelMessage.Data1;
                                     startedNoteIsClosed = false;
@@ -99,21 +102,21 @@ namespace DPA_Musicsheets.Loaders
                                 {
                                     // Finish the previous note with the length.
                                     double percentageOfBar;
-                                   // lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
+                                //    lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
                                     previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
-                                   // lilypondContent.Append(" ");
+                                  //  lilypondContent.Append(" ");
 
                                   //  percentageOfBarReached += percentageOfBar;
                                     if (percentageOfBarReached >= 1)
                                     {
-                                    //    lilypondContent.AppendLine("|");
+                                 //       lilypondContent.AppendLine("|");
                                         percentageOfBarReached -= 1;
                                     }
                                     startedNoteIsClosed = true;
                                 }
                                 else
                                 {
-                                 //   lilypondContent.Append("r");
+                             //       lilypondContent.Append("r");
                                 }
                             }
                             break;

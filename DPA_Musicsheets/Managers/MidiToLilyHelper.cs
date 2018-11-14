@@ -83,7 +83,6 @@ namespace DPA_Musicsheets.Managers
 
         public static string GetLilyNoteName(int previousMidiKey, int midiKey)
         {
-            int octave = (midiKey / 12) - 1;
             string name = "";
             switch (midiKey % 12)
             {
