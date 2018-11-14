@@ -1,6 +1,5 @@
 ﻿using System;
 using DPA_Musicsheets.Builders;
-using DPA_Musicsheets.Managers;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
 using Sanford.Multimedia.Midi;
@@ -35,7 +34,7 @@ namespace DPA_Musicsheets.Loaders
             double percentageOfBarReached = 0;
             bool startedNoteIsClosed = true;
             int beatNote = 4;
-            int beatsPerBar;
+            int beatsPerBar = 0;
 
             foreach (var track in sequence)
             {
@@ -70,15 +69,18 @@ namespace DPA_Musicsheets.Loaders
                                     {
                                         // Finish the last notelength.
                                         double percentageOfBar;
-                                     //   lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
+                                        var lengthInfo = GetNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks,
+                                            division, beatNote, beatsPerBar, out percentageOfBar);
+                                        noteBuilder.SetDuration(lengthInfo.Duration);
+                                        noteBuilder.SetExtended(lengthInfo.Extended);
                                         MusicBuilder.AddSymbol(noteBuilder.GetNote());
-                                      //  percentageOfBarReached += percentageOfBar;
+                                        percentageOfBarReached += percentageOfBar;
                                         if (percentageOfBarReached >= 1)
                                         {
                                             var barlineBuilder = new BarlineBuilder();
                                             barlineBuilder.Init();
                                             MusicBuilder.AddSymbol(barlineBuilder.GetBarline());
-                                        //    percentageOfBar = percentageOfBar - 1;
+                                            percentageOfBar = percentageOfBar - 1;
                                         }
                                     }
                                     break;
@@ -92,9 +94,20 @@ namespace DPA_Musicsheets.Loaders
                                 {
                                     // Append the new note.
                                     noteBuilder.Init();
+                                    noteBuilder.SetPitch((Pitch)(channelMessage.Data1 % 12));
+                                    int distance = channelMessage.Data1 - previousMidiKey;
+                                    while (distance < -6)
+                                    {
+                                        noteBuilder.SetModifier(Modifier.Down);
+                                        distance += 8;
+                                    }
 
-                               //     lilypondContent.Append(MidiToLilyHelper.GetLilyNoteName(previousMidiKey, channelMessage.Data1));
-
+                                    while (distance > 6)
+                                    {
+                                        noteBuilder.SetModifier(Modifier.Up);
+                                        distance -= 8;
+                                    }
+                                    
                                     previousMidiKey = channelMessage.Data1;
                                     startedNoteIsClosed = false;
                                 }
@@ -102,44 +115,112 @@ namespace DPA_Musicsheets.Loaders
                                 {
                                     // Finish the previous note with the length.
                                     double percentageOfBar;
-                                //    lilypondContent.Append(MidiToLilyHelper.GetLilypondNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks, division, beatNote, beatsPerBar, out percentageOfBar));
-                                    previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
-                                  //  lilypondContent.Append(" ");
+                                    var lengthInfo = GetNoteLength(previousNoteAbsoluteTicks, midiEvent.AbsoluteTicks,
+                                        division, beatNote, beatsPerBar, out percentageOfBar);
+                                    noteBuilder.SetDuration(lengthInfo.Duration);
+                                    noteBuilder.SetExtended(lengthInfo.Extended);
+                                    MusicBuilder.AddSymbol(noteBuilder.GetNote());
 
-                                  //  percentageOfBarReached += percentageOfBar;
+                                    previousNoteAbsoluteTicks = midiEvent.AbsoluteTicks;
+
+                                    percentageOfBarReached += percentageOfBar;
                                     if (percentageOfBarReached >= 1)
                                     {
-                                 //       lilypondContent.AppendLine("|");
+                                        var barlineBuilder = new BarlineBuilder();
+                                        barlineBuilder.Init();
+                                        MusicBuilder.AddSymbol(barlineBuilder.GetBarline());
                                         percentageOfBarReached -= 1;
                                     }
                                     startedNoteIsClosed = true;
                                 }
                                 else
                                 {
-                             //       lilypondContent.Append("r");
+                                    noteBuilder.Init();
+                                    noteBuilder.SetPitch(Pitch.R);
                                 }
                             }
                             break;
                     }
                 }
             }
-
-
-
-
-
-
-            foreach (var track in sequence)
-            {
-                foreach (var midiEvent in track.Iterator())
-                {
-                    var message = midiEvent.MidiMessage;
-                    var metaMessage = midiEvent.MidiMessage as MetaMessage;
-                    var channelMessage = midiEvent.MidiMessage as ChannelMessage;   
-
-                }
-            }
         }
 
+        private NoteLengthInfo GetNoteLength(int absoluteTicks, int nextNoteAbsoluteTicks, int division, int beatNote, int beatsPerBar, out double percentageOfBar)
+        {
+            var noteLengthInfo = new NoteLengthInfo();
+            int dots = 0;
+            double deltaTicks = nextNoteAbsoluteTicks - absoluteTicks;
+
+            if (deltaTicks <= 0)
+            {
+                percentageOfBar = 0;
+                return noteLengthInfo;
+            }
+
+            double percentageOfBeatNote = deltaTicks / division;
+            percentageOfBar = (1.0 / beatsPerBar) * percentageOfBeatNote;
+
+            for (int noteLength = 32; noteLength >= 1; noteLength -= 1)
+            {
+                double absoluteNoteLength = (1.0 / noteLength);
+
+                if (percentageOfBar <= absoluteNoteLength)
+                {
+                    if (noteLength < 2)
+                        noteLength = 2;
+
+                    int subtractDuration;
+
+                    if (noteLength == 32)
+                        subtractDuration = 32;
+                    else if (noteLength >= 16)
+                        subtractDuration = 16;
+                    else if (noteLength >= 8)
+                        subtractDuration = 8;
+                    else if (noteLength >= 4)
+                        subtractDuration = 4;
+                    else
+                        subtractDuration = 2;
+
+                    if (noteLength >= 17)
+                        noteLengthInfo.Duration = 32;
+                    else if (noteLength >= 9)
+                        noteLengthInfo.Duration = 16;
+                    else if (noteLength >= 5)
+                        noteLengthInfo.Duration = 8;
+                    else if (noteLength >= 3)
+                        noteLengthInfo.Duration = 4;
+                    else
+                        noteLengthInfo.Duration = 2;
+
+                    double currentTime = 0;
+
+                    while (currentTime < (noteLength - subtractDuration))
+                    {
+                        var addtime = 1 / ((subtractDuration / beatNote) * Math.Pow(2, dots));
+                        if (addtime <= 0) break;
+                        currentTime += addtime;
+                        if (currentTime <= (noteLength - subtractDuration))
+                        {
+                            dots++;
+                            noteLengthInfo.Extended = true;
+                        }
+                        if (dots >= 4) break;
+                    }
+
+                    break;
+                }
+            }
+
+            return noteLengthInfo;
+        }
+
+
+    }
+
+    class NoteLengthInfo
+    {
+        public int Duration { get; set; }
+        public bool Extended { get; set; }
     }
 }
