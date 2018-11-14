@@ -9,7 +9,7 @@ namespace DPA_Musicsheets.MusicDomain
         public int Tempo { get; set; }
         public Clef Clef { get; set; }
 
-        private List<IMusicSymbol> Symbols;
+        public List<IMusicSymbol> Symbols;
 
 
     }
