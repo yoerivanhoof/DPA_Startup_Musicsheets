@@ -112,8 +112,10 @@
     <Compile Include="Builders\TimeSignatureBuilder.cs" />
     <Compile Include="Loaders\FileLoader.cs" />
     <Compile Include="Loaders\LilyFileLoader.cs" />
+    <Compile Include="Loaders\LilyConverter.cs" />
     <Compile Include="Loaders\LoaderFactory.cs" />
     <Compile Include="Loaders\MidiFileLoader.cs" />
+    <Compile Include="Loaders\MidiConverter.cs" />
     <Compile Include="Managers\MidiToLilyHelper.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\LilypondToken.cs" />

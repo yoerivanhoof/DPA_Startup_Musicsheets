@@ -10,6 +10,7 @@ namespace DPA_Musicsheets.Loaders
         public abstract string FileExtension { get; }
 
         public abstract void Load(string fileName);
+        public abstract void Save(string fileName, Music music);
 
         public Music GetMusic()
         {
