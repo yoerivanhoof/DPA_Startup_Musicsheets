@@ -61,11 +61,11 @@ namespace DPA_Musicsheets.Managers
             var rest = notes.FirstOrDefault(n => n.Pitch == Pitch.R);
             //if (Path.GetExtension(fileName).EndsWith(".mid"))
             //{
-            //    MidiSequence = new Sequence();
-            //    MidiSequence.Load(fileName);
+                MidiSequence = new Sequence();
+                MidiSequence.Load(fileName);
 
             //    MidiPlayerViewModel.MidiSequence = MidiSequence;
-            //    this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
+                this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
             //    this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
             //else if (Path.GetExtension(fileName).EndsWith(".ly"))
