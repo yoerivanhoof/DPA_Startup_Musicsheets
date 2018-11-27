@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
@@ -68,59 +67,11 @@ namespace DPA_Musicsheets.Loaders
                     MusicBuilder.SetTempo(int.Parse(lily[i+1].Split('=')[1]));
                     i++;
                 }
-                else if(lily[i].Contains("{"))
+                else if(lily.Contains("{"))
                 {
                     SequenceStartBuilder builder = new SequenceStartBuilder();
                     builder.Init();
                     MusicBuilder.AddSymbol(builder.GetSequenceStart());
-                }else if (lily[i].Contains("}"))
-                {
-                    SequenceEndBuilder builder = new SequenceEndBuilder();
-                    builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetSequenceEnd());
-                }else if (lily[i].Contains("|"))
-                {
-                    BarlineBuilder builder = new BarlineBuilder();
-                    builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetBarline());
-                }else if (lily[i].Contains("repeat"))
-                {
-                    //todo
-                    i++;
-                    i++;
-                }
-                else if(!lily[i].Contains("\\"))
-                {
-                    var note = Regex.Match(lily[i],
-                        "(?'note'[a-gris]{1,3})(?'modifier'[,']{0,2})(?'duration'[0-9]{1,2})(?'extended'[.]{0,1})(?'resonate'[~]{0,1})");
-
-                    NoteBuilder builder = new NoteBuilder();
-                    builder.Init();
-                    builder.SetPitch((Pitch) Enum.Parse(typeof(Pitch), note.Groups["note"].Value.ToUpper()));
-                    builder.SetDuration(int.Parse(note.Groups["duration"].Value));
-
-                    if (note.Groups["extended"].Length > 0)
-                    {
-                        builder.SetExtended(true);
-                    }
-
-                    if (note.Groups["modifier"].Length > 0)
-                    {
-                        if (note.Groups["modifier"].Value.Contains("'"))
-                        {
-                            builder.SetModifier(Modifier.Up);
-                        }else if (note.Groups["modifier"].Value.Contains(","))
-                        {
-                            builder.SetModifier(Modifier.Down);
-                        }
-                    }
-
-                    if (note.Groups["resonate"].Length > 0)
-                    {
-                        builder.SetResonate(true);
-                    }
-                    MusicBuilder.AddSymbol(builder.GetNote());
-
                 }
             }
 
