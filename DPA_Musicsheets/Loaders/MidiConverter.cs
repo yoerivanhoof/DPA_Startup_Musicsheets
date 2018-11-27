@@ -95,13 +95,13 @@ namespace DPA_Musicsheets.Loaders
                                     int distance = channelMessage.Data1 - previousMidiKey;
                                     while (distance < -6)
                                     {
-                                        noteBuilder.SetModifier(Modifier.Down);
+                                        noteBuilder.SetModifier(ModifierToken.DOWN);
                                         distance += 8;
                                     }
 
                                     while (distance > 6)
                                     {
-                                        noteBuilder.SetModifier(Modifier.Up);
+                                        noteBuilder.SetModifier(ModifierToken.UP);
                                         distance -= 8;
                                     }
 

@@ -13,6 +13,7 @@
 
         public Note()
         {
+            Modifier = new Modifier();
         }
     }
 }

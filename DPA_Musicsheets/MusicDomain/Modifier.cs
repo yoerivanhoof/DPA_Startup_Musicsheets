@@ -2,7 +2,7 @@
 {
     public class Modifier
     {
-        private ModifierToken token { get; set; } = ModifierToken.NONE;
-        public int count { get; set; } = 0;
+        public ModifierToken Token { get; set; } = ModifierToken.NONE;
+        public int Count { get; set; } = 0;
     }
 }

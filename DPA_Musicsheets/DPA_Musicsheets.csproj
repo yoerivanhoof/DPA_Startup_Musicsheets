@@ -120,6 +120,7 @@
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />
+    <Compile Include="MusicDomain\ModifierToken.cs" />
     <Compile Include="MusicDomain\Symbols\Barline.cs" />
     <Compile Include="MusicDomain\Symbols\Clef.cs" />
     <Compile Include="MusicDomain\Symbols\IMusicSymbol.cs" />

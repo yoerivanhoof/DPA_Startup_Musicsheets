@@ -15,7 +15,7 @@ namespace DPA_Musicsheets.Builders
         public void MakePreparedKey()
         {
             _note.Pitch = Pitch.C;
-            _note.ModifierToken = ModifierToken.Up;
+            _note.Modifier.Token = ModifierToken.UP;
         }
 
         public void SetPitch(Pitch pitch)
@@ -35,7 +35,7 @@ namespace DPA_Musicsheets.Builders
 
         public void SetModifier(ModifierToken modifierToken)
         {
-            _note.ModifierToken = modifierToken;
+            _note.Modifier.Token = modifierToken;
         }
 
         public void SetExtended(bool extended)
