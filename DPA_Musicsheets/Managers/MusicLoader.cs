@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DPA_Musicsheets.Loaders;
+using DPA_Musicsheets.MusicDomain;
 
 namespace DPA_Musicsheets.Managers
 {
@@ -54,15 +55,17 @@ namespace DPA_Musicsheets.Managers
             var loader = loaderFactory.GetLoader(Path.GetExtension(fileName));
 
             loader.Load(fileName);
+            var music = loader.GetMusic();
 
-
+            var notes = music.Symbols.Where(n => n is MusicDomain.Symbols.Note).Cast<MusicDomain.Symbols.Note>().ToList();
+            var rest = notes.FirstOrDefault(n => n.Pitch == Pitch.R);
             //if (Path.GetExtension(fileName).EndsWith(".mid"))
             //{
-            //    MidiSequence = new Sequence();
-            //    MidiSequence.Load(fileName);
+                MidiSequence = new Sequence();
+                MidiSequence.Load(fileName);
 
             //    MidiPlayerViewModel.MidiSequence = MidiSequence;
-            //    this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
+                this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
             //    this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
             //else if (Path.GetExtension(fileName).EndsWith(".ly"))
