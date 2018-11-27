@@ -33,9 +33,10 @@ namespace DPA_Musicsheets.Builders
             _note.Resonate = resonate;
         }
 
-        public void SetModifier(ModifierToken modifierToken)
+        public void SetModifier(ModifierToken modifierToken, int count)
         {
             _note.Modifier.Token = modifierToken;
+            _note.Modifier.Count = count;
         }
 
         public void SetExtended(bool extended)

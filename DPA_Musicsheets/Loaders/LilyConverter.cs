@@ -36,12 +36,11 @@ namespace DPA_Musicsheets.Loaders
 
                         {
                             case '\'':
-#warning comment
-                                //builder.SetModifier(ModifierType.Up, 1);
+                                builder.SetModifier(ModifierToken.UP, 1);
+#warning count
                                 break;
                             case ',':
-#warning comment
-                                //builder.SetModifier(ModifierType.Down, 1);
+                                builder.SetModifier(ModifierToken.DOWN, 1);
                                 break;
                         }
                     }
@@ -111,13 +110,11 @@ namespace DPA_Musicsheets.Loaders
                         {
                             if (note.Groups["modifierType"].Value.Contains("'"))
                             {
-#warning comment
-                                //builder.SetModifier(ModifierType.Up, note.Groups["modifierType"].Length);
+                                builder.SetModifier(ModifierToken.UP, note.Groups["modifierType"].Length);
                             }
                             else if (note.Groups["modifierType"].Value.Contains(","))
                             {
-#warning comment
-                                //builder.SetModifier(ModifierType.Down, note.Groups["modifierType"].Length);
+                                builder.SetModifier(ModifierToken.DOWN, note.Groups["modifierType"].Length);
                             }
                         }
 
