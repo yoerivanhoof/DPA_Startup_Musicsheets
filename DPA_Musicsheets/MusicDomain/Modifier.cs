@@ -1,8 +1,8 @@
 ﻿namespace DPA_Musicsheets.MusicDomain
 {
-    public enum Modifier
+    public class Modifier
     {
-        Down,
-        Up
+        private ModifierToken token { get; set; } = ModifierToken.NONE;
+        public int count { get; set; } = 0;
     }
 }
