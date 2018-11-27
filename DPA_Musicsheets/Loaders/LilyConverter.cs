@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
+using DPA_Musicsheets.Visitors;
 
 namespace DPA_Musicsheets.Loaders
 {
@@ -133,26 +134,28 @@ namespace DPA_Musicsheets.Loaders
         public string ConvertMusicToLily(Music music)
         {
             string returnstring = "";
-#warning comment
-            //string modifier = "";
+            string modifier = "";
 
-            //if (music.Key.Modifier.type != ModifierType.None)
-            //{
-            //    if (music.Key.Modifier.type == ModifierType.Down)
-            //    {
-            //        modifier += ",";
-            //    }
-            //    else
-            //    {
-            //        modifier += '\'';
-            //    }
-            //}
-            //returnstring += "\\relative " + music.Key.Pitch.ToString() + modifier + "\n";
+            if (music.Key.Modifier.Token != ModifierToken.NONE)
+            {
+                if (music.Key.Modifier.Token == ModifierToken.DOWN)
+                {
+                    modifier += ",";
+                }
+                else
+                {
+                    modifier += '\'';
+                }
+            }
+            returnstring += "\\relative " + music.Key.Pitch.ToString() + modifier + "\n";
 
-            //foreach (IMusicSymbol musicSymbol in music.Symbols)
-            //{
+            foreach (IMusicSymbol musicSymbol in music.Symbols)
+            {
+                LilyVisitor visitor = new LilyVisitor();
+                returnstring += musicSymbol.Accept(visitor);
 
-            //}
+
+            }
 
             return returnstring;
         }

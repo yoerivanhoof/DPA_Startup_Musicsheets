@@ -1,4 +1,6 @@
-﻿namespace DPA_Musicsheets.MusicDomain.Symbols
+﻿using DPA_Musicsheets.Visitors;
+
+namespace DPA_Musicsheets.MusicDomain.Symbols
 {
     public class Note : IMusicSymbol
     {
@@ -14,6 +16,12 @@
         public Note()
         {
             Modifier = new Modifier();
+        }
+
+
+        public T Accept<T>(SymbolVisitor<T> visitor)
+        {
+            return visitor.VisitNoteSymbol(this);
         }
     }
 }

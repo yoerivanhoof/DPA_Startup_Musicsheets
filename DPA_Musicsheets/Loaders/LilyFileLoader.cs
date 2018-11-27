@@ -15,7 +15,10 @@ namespace DPA_Musicsheets.Loaders
                 str += line;
             }
             var musicLoader = new LilyConverter(MusicBuilder);
-            musicLoader.ConvertLilyToMusic(str);
+            var music = musicLoader.ConvertLilyToMusic(str);
+
+#warning test
+            musicLoader.ConvertMusicToLily(music);
         }
 
         public override void Save(string fileName, Music music)
