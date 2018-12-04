@@ -45,7 +45,17 @@ namespace DPA_Musicsheets.Visitors
 
         public override string VisitTimeSignatureSymbol(TimeSignature symbol)
         {
-            return $"\\time {symbol.Beats}\\{symbol.BeatsPerBar}\n";
+            return $"\\time {symbol.Beats}/{symbol.BeatsPerBar} \n";
+        }
+
+        public override string VisitRepeatSymbol(Repeat symbol)
+        {
+            return $"\n\\repeat volta {symbol.count} ";
+        }
+
+        public override string VisitAlternativeSymbol(Alternative symbol)
+        {
+            return $"\\alternative ";
         }
     }
 }

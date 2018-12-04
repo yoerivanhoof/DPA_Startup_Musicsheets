@@ -64,5 +64,15 @@ namespace DPA_Musicsheets.Visitors
 
             return timeSignatureList;
         }
+
+        public override Dictionary<IMidiMessage, double> VisitRepeatSymbol(Repeat symbol)
+        {
+            return new Dictionary<IMidiMessage, double>();
+        }
+
+        public override Dictionary<IMidiMessage, double> VisitAlternativeSymbol(Alternative symbol)
+        {
+            return new Dictionary<IMidiMessage, double>();
+        }
     }
 }

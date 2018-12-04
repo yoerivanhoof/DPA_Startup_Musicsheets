@@ -70,19 +70,19 @@ namespace DPA_Musicsheets.Managers
                // this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
                 //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
-             if (Path.GetExtension(fileName).EndsWith(".ly"))
-            {
+            // if (Path.GetExtension(fileName).EndsWith(".ly"))
+            //{
 
 
-                StringBuilder sb = new StringBuilder();
-                foreach (var line in File.ReadAllLines(fileName))
-                {
-                    sb.AppendLine(line);
-                }
+            //    StringBuilder sb = new StringBuilder();
+            //    foreach (var line in File.ReadAllLines(fileName))
+            //    {
+            //        sb.AppendLine(line);
+            //    }
 
-                this.LilypondText = sb.ToString();
-                this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
-            }
+            //    this.LilypondText = sb.ToString();
+            //    this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
+            //}
             //else
             //{
             //    throw new NotSupportedException($"File extension {Path.GetExtension(fileName)} is not supported.");
