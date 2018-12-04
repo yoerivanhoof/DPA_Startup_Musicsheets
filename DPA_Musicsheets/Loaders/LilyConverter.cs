@@ -86,8 +86,18 @@ namespace DPA_Musicsheets.Loaders
                     builder.Init();
                     MusicBuilder.AddSymbol(builder.GetBarline());
                 }
+                else if (lily[i].Contains("alternative"))
+                {
+                    var builder = new AlternativeBuilder();
+                    builder.Init();
+                    MusicBuilder.AddSymbol(builder.GetAlternative());
+                }
                 else if (lily[i].Contains("repeat"))
                 {
+                    var builder = new RepeatBuilder();
+                    builder.Init();
+                    builder.SetCount(int.Parse(lily[i+2]));
+                    MusicBuilder.AddSymbol(builder.GetRepeat());
                     //todo
                     i += 2;
                 }
@@ -147,12 +157,19 @@ namespace DPA_Musicsheets.Loaders
                     modifier += '\'';
                 }
             }
-            returnstring += "\\relative " + music.Key.Pitch.ToString() + modifier + "\n";
+            returnstring += $"\\relative {music.Key.Pitch.ToString().ToLower()}{modifier} {{ \n";
+            music.Symbols.Remove(music.Symbols.First());
+
+            returnstring += $"\\clef {music.Clef.ToString().ToLower()} \n";
+
+            returnstring += $"\\tempo 4={music.Tempo.ToString()} \n";
+
+            
 
             foreach (IMusicSymbol musicSymbol in music.Symbols)
             {
                 LilyVisitor visitor = new LilyVisitor();
-                returnstring += musicSymbol.Accept(visitor);
+                returnstring += musicSymbol.Accept(visitor).ToLower();
 
 
             }

@@ -29,5 +29,15 @@ namespace DPA_Musicsheets.Visitors
         {
             throw new System.NotImplementedException();
         }
+
+        public override Sequence VisitRepeatSymbol(Repeat symbol)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Sequence VisitAlternativeSymbol(Alternative symbol)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

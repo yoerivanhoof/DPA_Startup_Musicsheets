@@ -10,10 +10,7 @@ namespace DPA_Musicsheets.Loaders
         public override void Load(string fileName)
         {
             string str = "";
-            foreach (var line in File.ReadAllLines(fileName))
-            {
-                str += line;
-            }
+            str += File.ReadAllText(fileName);
             var musicLoader = new LilyConverter(MusicBuilder);
             var music = musicLoader.ConvertLilyToMusic(str);
 
@@ -23,7 +20,7 @@ namespace DPA_Musicsheets.Loaders
 
         public override void Save(string fileName, Music music)
         {
-            throw new NotImplementedException();
+            File.WriteAllText(fileName, new LilyConverter(MusicBuilder).ConvertMusicToLily(music));
         }
     }
 }

@@ -106,6 +106,8 @@
     <Compile Include="Builders\AbstractBuilder.cs" />
     <Compile Include="Builders\BarlineBuilder.cs" />
     <Compile Include="Builders\MusicBuilder.cs" />
+    <Compile Include="Builders\AlternativeBuilder.cs" />
+    <Compile Include="Builders\RepeatBuilder.cs" />
     <Compile Include="Builders\NoteBuilder.cs" />
     <Compile Include="Builders\SequenceEndBuilder.cs" />
     <Compile Include="Builders\SequenceStartBuilder.cs" />
@@ -128,6 +130,8 @@
     <Compile Include="MusicDomain\Music.cs" />
     <Compile Include="MusicDomain\Symbols\Note.cs" />
     <Compile Include="MusicDomain\Pitch.cs" />
+    <Compile Include="MusicDomain\Symbols\Alternative.cs" />
+    <Compile Include="MusicDomain\Symbols\Repeat.cs" />
     <Compile Include="MusicDomain\Symbols\SequenceEnd.cs" />
     <Compile Include="MusicDomain\Symbols\SequenceStart.cs" />
     <Compile Include="MusicDomain\Symbols\TimeSignature.cs" />
