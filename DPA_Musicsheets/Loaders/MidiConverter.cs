@@ -93,18 +93,22 @@ namespace DPA_Musicsheets.Loaders
                                     noteBuilder.Init();
                                     noteBuilder.SetPitch((Pitch)(channelMessage.Data1 % 12));
                                     int distance = channelMessage.Data1 - previousMidiKey;
+                                    ModifierToken token = ModifierToken.NONE;
+                                    int modifierCount = 0;
                                     while (distance < -6)
                                     {
-#warning count
-                                        noteBuilder.SetModifier(ModifierToken.DOWN, 1);
+                                        token = ModifierToken.DOWN;
+                                        modifierCount++;
                                         distance += 8;
                                     }
 
                                     while (distance > 6)
                                     {
-                                        noteBuilder.SetModifier(ModifierToken.UP, 1);
+                                        token = ModifierToken.UP;
+                                        modifierCount++;
                                         distance -= 8;
                                     }
+                                    noteBuilder.SetModifier(token, modifierCount);
 
                                     previousMidiKey = channelMessage.Data1;
                                     startedNoteIsClosed = false;

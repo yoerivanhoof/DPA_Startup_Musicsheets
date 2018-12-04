@@ -10,7 +10,7 @@ namespace DPA_Musicsheets.MusicDomain.Symbols
         public bool Resonate { get; set; }
         public Modifier Modifier { get; set; }
         public bool Extended { get; set; }
-       
+        public int Octave { get; set; } = 4;
 
 
         public Note()
