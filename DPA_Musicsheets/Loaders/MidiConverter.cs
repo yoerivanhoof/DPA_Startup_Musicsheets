@@ -92,19 +92,26 @@ namespace DPA_Musicsheets.Loaders
                                     // Append the new note.
                                     noteBuilder.Init();
                                     noteBuilder.SetPitch((Pitch)(channelMessage.Data1 % 12));
+                                    noteBuilder.SetOctave(channelMessage.Data1 / 12 - 1);
+                                    //todo octave
                                     int distance = channelMessage.Data1 - previousMidiKey;
+
+                                    ModifierToken token = ModifierToken.NONE;
+                                    int modifierCount = 0;
                                     while (distance < -6)
                                     {
-#warning count
-                                        noteBuilder.SetModifier(ModifierToken.DOWN, 1);
+                                        token = ModifierToken.DOWN;
+                                        modifierCount++;
                                         distance += 8;
                                     }
 
                                     while (distance > 6)
                                     {
-                                        noteBuilder.SetModifier(ModifierToken.UP, 1);
+                                        token = ModifierToken.UP;
+                                        modifierCount++;
                                         distance -= 8;
                                     }
+                                    noteBuilder.SetModifier(token, modifierCount);
 
                                     previousMidiKey = channelMessage.Data1;
                                     startedNoteIsClosed = false;
@@ -141,11 +148,6 @@ namespace DPA_Musicsheets.Loaders
                     }
                 }
             }
-        }
-
-        public Sequence ConvertMusicToMidi(Music music)
-        {
-            return new Sequence();
         }
 
         private NoteLengthInfo GetNoteLength(int absoluteTicks, int nextNoteAbsoluteTicks, int division, int beatNote, int beatsPerBar, out double percentageOfBar)

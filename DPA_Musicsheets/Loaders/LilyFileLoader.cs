@@ -12,9 +12,7 @@ namespace DPA_Musicsheets.Loaders
             str += File.ReadAllText(fileName);
             var musicLoader = new LilyConverter(MusicBuilder);
             var music = musicLoader.ConvertLilyToMusic(str);
-
-#warning test
-            musicLoader.ConvertMusicToLily(music);
+          
         }
 
         public override void Save(string fileName, Music music)

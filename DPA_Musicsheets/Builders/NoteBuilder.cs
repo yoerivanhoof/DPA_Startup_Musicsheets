@@ -23,6 +23,11 @@ namespace DPA_Musicsheets.Builders
             _note.Pitch = pitch;
         }
 
+        public void SetOctave(int octave)
+        {
+            _note.Octave = octave;
+        }
+
         public void SetDuration(int duration)
         {
             _note.Duration = duration;

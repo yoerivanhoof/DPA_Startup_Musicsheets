@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DPA_Musicsheets.Loaders;
 using DPA_Musicsheets.MusicDomain;
+using DPA_Musicsheets.Visitors;
 
 namespace DPA_Musicsheets.Managers
 {
@@ -57,27 +58,28 @@ namespace DPA_Musicsheets.Managers
             loader.Load(fileName);
             var music = loader.GetMusic();
 
-            var notes = music.Symbols.Where(n => n is MusicDomain.Symbols.Note).Cast<MusicDomain.Symbols.Note>().ToList();
-            var rest = notes.FirstOrDefault(n => n.Pitch == Pitch.R);
+            var sequence = getMidiSequence(music);
+        
+
             //if (Path.GetExtension(fileName).EndsWith(".mid"))
             //{
-                MidiSequence = new Sequence();
-                MidiSequence.Load(fileName);
+           //   var  midiSequence = new Sequence();
+             //   midiSequence.Load(fileName);
 
-            //    MidiPlayerViewModel.MidiSequence = MidiSequence;
-                this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
-            //    this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
+                //MidiPlayerViewModel.MidiSequence = MidiSequence;
+               // this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
+                //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
-            //else if (Path.GetExtension(fileName).EndsWith(".ly"))
+            // if (Path.GetExtension(fileName).EndsWith(".ly"))
             //{
-                
+
 
             //    StringBuilder sb = new StringBuilder();
             //    foreach (var line in File.ReadAllLines(fileName))
             //    {
             //        sb.AppendLine(line);
             //    }
-                
+
             //    this.LilypondText = sb.ToString();
             //    this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
@@ -86,8 +88,67 @@ namespace DPA_Musicsheets.Managers
             //    throw new NotSupportedException($"File extension {Path.GetExtension(fileName)} is not supported.");
             //}
 
-            LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
+           // LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
+           // var testSequence = GetSequenceFromWPFStaffs();
+            MidiPlayerViewModel.MidiSequence = sequence;
         }
+
+
+        private Sequence getMidiSequence(Music music)
+        {
+            int absoluteTicks = 0;
+
+            Sequence sequence = new Sequence();
+
+            Track metaTrack = new Track();
+            sequence.Add(metaTrack);
+
+            // Calculate tempo
+            int speed = (60000000 / music.Tempo);
+            byte[] tempo = new byte[3];
+            tempo[0] = (byte)((speed >> 16) & 0xff);
+            tempo[1] = (byte)((speed >> 8) & 0xff);
+            tempo[2] = (byte)(speed & 0xff);
+            metaTrack.Insert(0 /* Insert at 0 ticks*/, new MetaMessage(MetaType.Tempo, tempo));
+
+            Track notesTrack = new Track();
+            sequence.Add(notesTrack);
+
+            var visitor = new MidiVisitor();
+            foreach (var symbol in music.Symbols)
+            {
+                var visitResult = symbol.Accept(visitor);
+                foreach (var item in visitResult)
+                {
+                    if (item.Value > 0)
+                    {
+                        double relationToQuartNote = _beatNote / 4.0;
+                        double percentageOfBeatNote = (1.0 / _beatNote) / item.Value;
+                        double deltaTicks = (sequence.Division / relationToQuartNote) / percentageOfBeatNote;
+                        absoluteTicks += (int)deltaTicks;
+                    }
+
+                    if (item.Key is ChannelMessage)
+                    {
+                        notesTrack.Insert(absoluteTicks, item.Key);
+                    }
+                    if (item.Key is MetaMessage)
+                    {
+                        metaTrack.Insert(absoluteTicks, item.Key);
+                    }
+                }
+            }
+
+            notesTrack.EndOfTrackOffset = 1;
+            metaTrack.EndOfTrackOffset = 1;
+
+            notesTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
+            metaTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
+            return sequence;
+        }
+
+
+
 
         /// <summary>
         /// This creates WPF staffs and MIDI from Lilypond.
@@ -450,6 +511,11 @@ namespace DPA_Musicsheets.Managers
                     case MusicalSymbolType.Note:
                         Note note = musicalSymbol as Note;
 
+                        // Calculate height
+                        int noteHeight = notesOrderWithCrosses.IndexOf(note.Step.ToLower()) + ((note.Octave + 1) * 12);
+                        noteHeight += note.Alter;
+                        notesTrack.Insert(absoluteTicks, new ChannelMessage(ChannelCommand.NoteOn, 1, noteHeight, 90)); // Data2 = volume
+
                         // Calculate duration
                         double absoluteLength = 1.0 / (double)note.Duration;
                         absoluteLength += (absoluteLength / 2.0) * note.NumberOfDots;
@@ -458,10 +524,6 @@ namespace DPA_Musicsheets.Managers
                         double percentageOfBeatNote = (1.0 / _beatNote) / absoluteLength;
                         double deltaTicks = (sequence.Division / relationToQuartNote) / percentageOfBeatNote;
 
-                        // Calculate height
-                        int noteHeight = notesOrderWithCrosses.IndexOf(note.Step.ToLower()) + ((note.Octave + 1) * 12);
-                        noteHeight += note.Alter;
-                        notesTrack.Insert(absoluteTicks, new ChannelMessage(ChannelCommand.NoteOn, 1, noteHeight, 90)); // Data2 = volume
 
                         absoluteTicks += (int)deltaTicks;
                         notesTrack.Insert(absoluteTicks, new ChannelMessage(ChannelCommand.NoteOn, 1, noteHeight, 0)); // Data2 = volume

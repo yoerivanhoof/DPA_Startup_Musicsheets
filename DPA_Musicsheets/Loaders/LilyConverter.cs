@@ -21,8 +21,8 @@ namespace DPA_Musicsheets.Loaders
         public Music ConvertLilyToMusic(string str)
         {
             var lily = str.Replace('\r', ' ').Replace('\n', ' ').Split(' ').Where(s => !string.IsNullOrWhiteSpace(s)).ToList(); ;
-            MusicBuilder MusicBuilder = new MusicBuilder();
-            MusicBuilder.Init(); ;
+
+            _musicBuilder.Init(); ;
 
             for (var i = 0; i < lily.Count; i++)
                 if (lily[i].Contains("relative"))
@@ -46,12 +46,12 @@ namespace DPA_Musicsheets.Loaders
                         }
                     }
 
-                    MusicBuilder.SetPitch(builder.GetNote());
+                    _musicBuilder.SetPitch(builder.GetNote());
                     i++;
                 }
                 else if (lily[i].Contains("clef"))
                 {
-                    MusicBuilder.SetClef((Clef)Enum.Parse(typeof(Clef), lily[i + 1].ToUpper()));
+                    _musicBuilder.SetClef((Clef)Enum.Parse(typeof(Clef), lily[i + 1].ToUpper()));
                     i++;
                 }
                 else if (lily[i].Contains("time"))
@@ -60,45 +60,45 @@ namespace DPA_Musicsheets.Loaders
                     builder.Init();
                     builder.SetBeats(int.Parse(lily[i + 1].Split('/')[0]));
                     builder.SetBeatsPerBar(int.Parse(lily[i + 1].Split('/')[1]));
-                    MusicBuilder.AddSymbol(builder.GetTimeSignature());
+                    _musicBuilder.AddSymbol(builder.GetTimeSignature());
                     i++;
                 }
                 else if (lily[i].Contains("tempo"))
                 {
-                    MusicBuilder.SetTempo(int.Parse(lily[i + 1].Split('=')[1]));
+                    _musicBuilder.SetTempo(int.Parse(lily[i + 1].Split('=')[1]));
                     i++;
                 }
                 else if (lily[i].Contains("{"))
                 {
                     var builder = new SequenceStartBuilder();
                     builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetSequenceStart());
+                    _musicBuilder.AddSymbol(builder.GetSequenceStart());
                 }
                 else if (lily[i].Contains("}"))
                 {
                     var builder = new SequenceEndBuilder();
                     builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetSequenceEnd());
+                    _musicBuilder.AddSymbol(builder.GetSequenceEnd());
                 }
                 else if (lily[i].Contains("|"))
                 {
                     var builder = new BarlineBuilder();
                     builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetBarline());
+                    _musicBuilder.AddSymbol(builder.GetBarline());
                 }
                 else if (lily[i].Contains("alternative"))
                 {
                     var builder = new AlternativeBuilder();
                     builder.Init();
-                    MusicBuilder.AddSymbol(builder.GetAlternative());
+                    _musicBuilder.AddSymbol(builder.GetAlternative());
                 }
                 else if (lily[i].Contains("repeat"))
                 {
                     var builder = new RepeatBuilder();
                     builder.Init();
                     builder.SetCount(int.Parse(lily[i+2]));
-                    MusicBuilder.AddSymbol(builder.GetRepeat());
-                    //todo
+                    _musicBuilder.AddSymbol(builder.GetRepeat());
+                  
                     i += 2;
                 }
                 else if (!lily[i].Contains("\\"))
@@ -134,11 +134,11 @@ namespace DPA_Musicsheets.Loaders
                             builder.SetResonate(true);
                         }
 
-                        MusicBuilder.AddSymbol(builder.GetNote());
+                        _musicBuilder.AddSymbol(builder.GetNote());
                     }
                 }
 
-            return MusicBuilder.GetMusic();
+            return _musicBuilder.GetMusic();
         }
 
         public string ConvertMusicToLily(Music music)
