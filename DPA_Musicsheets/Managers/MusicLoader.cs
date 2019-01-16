@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.Loaders;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.Visitors;
@@ -59,16 +60,20 @@ namespace DPA_Musicsheets.Managers
             var music = loader.GetMusic();
 
             var sequence = getMidiSequence(music);
-        
+            
+            LilyConverter lilyConverter = new LilyConverter(new MusicBuilder());
+            LilypondViewModel.LilypondTextLoaded(lilyConverter.ConvertMusicToLily(music));
+
+            MidiPlayerViewModel.MidiSequence = sequence;
 
             //if (Path.GetExtension(fileName).EndsWith(".mid"))
             //{
-           //   var  midiSequence = new Sequence();
-             //   midiSequence.Load(fileName);
+            //   var  midiSequence = new Sequence();
+            //   midiSequence.Load(fileName);
 
-                //MidiPlayerViewModel.MidiSequence = MidiSequence;
-               // this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
-                //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
+            //MidiPlayerViewModel.MidiSequence = MidiSequence;
+            // this.LilypondText = LoadMidiIntoLilypond(MidiSequence);
+            //this.LilypondViewModel.LilypondTextLoaded(this.LilypondText);
             //}
             // if (Path.GetExtension(fileName).EndsWith(".ly"))
             //{
@@ -88,9 +93,9 @@ namespace DPA_Musicsheets.Managers
             //    throw new NotSupportedException($"File extension {Path.GetExtension(fileName)} is not supported.");
             //}
 
-           // LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
-           // var testSequence = GetSequenceFromWPFStaffs();
-            MidiPlayerViewModel.MidiSequence = sequence;
+            // LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
+            // var testSequence = GetSequenceFromWPFStaffs();
+
         }
 
 
