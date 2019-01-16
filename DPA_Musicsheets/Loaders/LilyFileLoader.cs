@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using DPA_Musicsheets.MusicDomain;
 
 namespace DPA_Musicsheets.Loaders
