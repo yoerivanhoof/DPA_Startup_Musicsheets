@@ -18,22 +18,8 @@ namespace DPA_Musicsheets.ViewModels
     public class LilypondViewModel : ViewModelBase
     {
         private MusicLoader _musicLoader;
+        private TextMementoCaretaker _mementoCaretaker = new TextMementoCaretaker(new TextMemento("Your lilypond text will appear here."));
 
-        private string _text;
-        private string _previousText;
-        private string _nextText;
-
-
-        public TextMemento CreateMemento()
-        {
-            return (new TextMemento(_text));
-        }
-
-        public void SetMemento(TextMemento memento)
-        {
-            Console.WriteLine("Restoring state...");
-            _text = memento.text();
-        }
 
         /// <summary>
         /// This text will be in the textbox.
@@ -43,43 +29,32 @@ namespace DPA_Musicsheets.ViewModels
         {
             get
             {
-                return _text;
+                return _mementoCaretaker.Memento.text();
             }
             set
             {
-                if (!_waitingForRender && !_textChangedByLoad)
-                {
-                    _previousText = _text;
-                    _textChanged = true;
-                }
-                _text = value;
+                _mementoCaretaker.AddMemento(new TextMemento(value));
+                _textChanged = true;
+                
                 RaisePropertyChanged(() => LilypondText);
             }
         }
 
-        private bool _textChangedByLoad = false;
+        private bool _textChangedByUndoRedo = false;
         private bool _textChanged = false;
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
-        private bool _waitingForRender = false;
         private StateMachine.StateMachine _stateMachine;
         public LilypondViewModel(MusicLoader musicLoader, StateMachine.StateMachine stateMachine)
         {
             _musicLoader = musicLoader;
             _musicLoader.MusicChanged += (sender, args) =>
             {
-                _text = new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music);
-                LilypondTextLoaded(_text);
+                if (!_textChangedByUndoRedo)
+                   _mementoCaretaker.AddMemento(new TextMemento(new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music)));
+                RaisePropertyChanged(() => LilypondText);
             };
             _stateMachine = stateMachine;
-            _text = "Your lilypond text will appear here.";
-        }
-
-        public void LilypondTextLoaded(string text)
-        {
-            _textChangedByLoad = true;
-            LilypondText = _previousText = text;
-            _textChangedByLoad = false;
         }
 
         /// <summary>
@@ -88,58 +63,56 @@ namespace DPA_Musicsheets.ViewModels
         public ICommand TextChangedCommand => new RelayCommand<TextChangedEventArgs>((args) =>
         {
             // If we were typing, we need to do things.
-            if (!_textChangedByLoad)
+            _lastChange = DateTime.Now;
+            
+            _stateMachine.ChangeState(new RenderingState());
+
+            Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
             {
-                _waitingForRender = true;
-                _lastChange = DateTime.Now;
-                
-                _stateMachine.ChangeState(new RenderingState());
-
-                Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
+                if ((DateTime.Now - _lastChange).TotalMilliseconds >= MILLISECONDS_BEFORE_CHANGE_HANDLED)
                 {
-                    if ((DateTime.Now - _lastChange).TotalMilliseconds >= MILLISECONDS_BEFORE_CHANGE_HANDLED)
+                    UndoCommand.RaiseCanExecuteChanged();
+
+                    _musicLoader.UpdateMusic(new LilyConverter(new MusicBuilder()).ConvertLilyToMusic(LilypondText));
+
+                    if (_textChanged)
                     {
-                        _waitingForRender = false;
-                        UndoCommand.RaiseCanExecuteChanged();
-
-                        _musicLoader.UpdateMusic(new LilyConverter(new MusicBuilder()).ConvertLilyToMusic(LilypondText));
-
-                        if (_textChanged)
-                        {
-                            _stateMachine.ChangeState(new UnsavedChangesState());
-                        }
-                        else
-                        {
-                            _stateMachine.ChangeState(new IdleState());
-                        }
+                        _stateMachine.ChangeState(new UnsavedChangesState());
                     }
-                }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
-            }
+                    else
+                    {
+                        _stateMachine.ChangeState(new IdleState());
+                    }
+
+                    _textChangedByUndoRedo = false;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
+            
         });
 
         public ICommand SelectionChangedCommand => new RelayCommand<RoutedEventArgs>((args) =>
         {
-            if (!_textChangedByLoad)
-            {
+            
                 var index = ((TextBox) args.Source).CaretIndex; //index for shortcuts
-            }
+            
         });
 
         #region Commands for buttons like Undo, Redo and SaveAs
         public RelayCommand UndoCommand => new RelayCommand(() =>
         {
-            _nextText = LilypondText;
-            LilypondText = _previousText;
-            _previousText = null;
-        }, () => _previousText != null && _previousText != LilypondText);
+            _textChangedByUndoRedo = true;
+            _mementoCaretaker.Undo();
+            UndoCommand.RaiseCanExecuteChanged();
+            RaisePropertyChanged(() => LilypondText);
+        }, () => _mementoCaretaker.CanUndo());
 
         public RelayCommand RedoCommand => new RelayCommand(() =>
         {
-            _previousText = LilypondText;
-            LilypondText = _nextText;
-            _nextText = null;
+            _textChangedByUndoRedo = true;
+            _mementoCaretaker.Redo();
             RedoCommand.RaiseCanExecuteChanged();
-        }, () => _nextText != null && _nextText != LilypondText);
+            RaisePropertyChanged(() => LilypondText);
+        }, () => _mementoCaretaker.CanRedo());
 
         public ICommand SaveAsCommand => new RelayCommand(() =>
         {
