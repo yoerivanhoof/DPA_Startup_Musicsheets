@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Memento;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -19,6 +20,18 @@ namespace DPA_Musicsheets.ViewModels
         private string _text;
         private string _previousText;
         private string _nextText;
+
+
+        public TextMemento CreateMemento()
+        {
+            return (new TextMemento(_text));
+        }
+
+        public void SetMemento(TextMemento memento)
+        {
+            Console.WriteLine("Restoring state...");
+            _text = memento.text();
+        }
 
         /// <summary>
         /// This text will be in the textbox.

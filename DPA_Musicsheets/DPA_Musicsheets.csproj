@@ -112,6 +112,7 @@
     <Compile Include="Builders\SequenceEndBuilder.cs" />
     <Compile Include="Builders\SequenceStartBuilder.cs" />
     <Compile Include="Builders\TimeSignatureBuilder.cs" />
+    <Compile Include="ChainOfResponsibility\abstractHandler.cs" />
     <Compile Include="Loaders\FileLoader.cs" />
     <Compile Include="Loaders\LilyFileLoader.cs" />
     <Compile Include="Loaders\LilyConverter.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="Loaders\StaffsConverter.cs" />
     <Compile Include="Managers\MidiToLilyHelper.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
+    <Compile Include="Memento\TextMemento.cs" />
+    <Compile Include="Memento\TextMementoCaretaker.cs" />
     <Compile Include="Models\LilypondToken.cs" />
     <Compile Include="Models\LilypondTokenKind.cs" />
     <Compile Include="MusicDomain\ModifierToken.cs" />
@@ -258,6 +261,7 @@
     <Content Include="Files\Eenvoudige voorbeeldfiles\Rusten.ly" />
     <Content Include="Files\Eenvoudige voorbeeldfiles\Standaard_noten.ly" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
