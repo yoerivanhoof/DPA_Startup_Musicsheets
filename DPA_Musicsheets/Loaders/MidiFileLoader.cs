@@ -1,6 +1,8 @@
 ﻿using System;
- using DPA_Musicsheets.MusicDomain;
- using Sanford.Multimedia.Midi;
+using System.IO;
+using DPA_Musicsheets.MusicDomain;
+using Microsoft.Win32;
+using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Loaders
 {
@@ -18,6 +20,9 @@ namespace DPA_Musicsheets.Loaders
 
         public override void Save(string fileName, Music music)
         {
+            
+                new MidiConverter(MusicBuilder).ConvertMusicToMidi(music).Save(fileName);
+            
         }
     }
 }

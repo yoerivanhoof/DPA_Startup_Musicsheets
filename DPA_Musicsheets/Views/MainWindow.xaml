@@ -37,6 +37,7 @@
             <Button Command="{Binding OpenFileCommand}" Content="Open" Margin="5" Width="75"/>
             <TextBox IsReadOnly="True" TextWrapping="Wrap" Text="{Binding FileName}" Width="400" Margin="5"/>
             <Button Command="{Binding LoadCommand}" Width="75" Content="Load" Margin="5"/>
+            <Button Command="{Binding SaveAsCommand }" Content="Save as..." Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="60"/>
             <local:MidiPlayerCtrl Margin="5" Grid.Row="2" Grid.Column="1"/>
         </StackPanel>
         <local:LilypondViewerCtrl Margin="5" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"/>

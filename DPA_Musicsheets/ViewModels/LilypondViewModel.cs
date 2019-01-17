@@ -131,35 +131,7 @@ namespace DPA_Musicsheets.ViewModels
             RaisePropertyChanged(() => LilypondText);
         }, () => _mementoCaretaker.CanRedo());
 
-        public ICommand SaveAsCommand => new RelayCommand(() =>
-        {
-            // TODO: In the application a lot of classes know which filetypes are supported. Lots and lots of repeated code here...
-            // Can this be done better?
-            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string extension = Path.GetExtension(saveFileDialog.FileName);
-                if (extension.EndsWith(".mid"))
-                {
-                    _musicLoader.SaveToMidi(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".ly"))
-                {
-                    _musicLoader.SaveToLilypond(saveFileDialog.FileName);
-                }
-                else if (extension.EndsWith(".pdf"))
-                {
-                    _musicLoader.SaveToPDF(saveFileDialog.FileName);
-                }
-                else
-                {
-                    MessageBox.Show($"Extension {extension} is not supported.");
-                }
-
-                _textChanged = false;
-                _stateMachine.ChangeState(new IdleState());
-            }
-        });
+        
         #endregion Commands for buttons like Undo, Redo and SaveAs
     }
 }

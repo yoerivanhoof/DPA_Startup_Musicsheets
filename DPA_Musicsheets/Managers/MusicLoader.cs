@@ -34,52 +34,5 @@ namespace DPA_Musicsheets.Managers
             MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music));
         }
 
-        #region Saving to files
-        internal void SaveToMidi(string fileName)
-        {
-            new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(Music).Save(fileName);
-        }
-
-        internal void SaveToLilypond(string fileName)
-        {
-            using (StreamWriter outputFile = new StreamWriter(fileName))
-            {
-                outputFile.Write(new LilyConverter(new MusicBuilder()).ConvertMusicToLily(Music));
-                outputFile.Close();
-            }
-        }
-
-        internal void SaveToPDF(string fileName)
-        {
-            string tmpFileName = $"{fileName}-tmp.ly";
-            SaveToLilypond(tmpFileName);
-
-            string lilypondLocation = @"C:\Program Files (x86)\LilyPond\usr\bin\lilypond.exe";
-            string sourceFolder = Path.GetDirectoryName(tmpFileName);
-            string sourceFileName = Path.GetFileNameWithoutExtension(tmpFileName);
-            string targetFolder = Path.GetDirectoryName(fileName);
-            string targetFileName = Path.GetFileNameWithoutExtension(fileName);
-
-            var process = new Process
-            {
-                StartInfo =
-                {
-                    WorkingDirectory = sourceFolder,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    Arguments = $"--pdf \"{sourceFolder}\\{sourceFileName}.ly\"",
-                    FileName = lilypondLocation
-                }
-            };
-
-            process.Start();
-            while (!process.HasExited) { /* Wait for exit */
-                }
-                if (sourceFolder != targetFolder || sourceFileName != targetFileName)
-            {
-                File.Move(sourceFolder + "\\" + sourceFileName + ".pdf", targetFolder + "\\" + targetFileName + ".pdf");
-                File.Delete(tmpFileName);
-            }
-        }
-        #endregion Saving to files
     }
 }

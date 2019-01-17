@@ -5,8 +5,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using DPA_Musicsheets.Loaders;
 using DPA_Musicsheets.Shortcuts;
+using DPA_Musicsheets.StateMachine;
 using Microsoft.Practices.ServiceLocation;
 
 namespace DPA_Musicsheets.ViewModels
@@ -48,22 +52,65 @@ namespace DPA_Musicsheets.ViewModels
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() {Key.LeftCtrl,Key.S,Key.M},new SaveMidiCommand(this) ));
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.S, Key.P }, new SavePDFCommand(this)));
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.O }, new OpenCommand(this)));
-            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.T }, new InsertTempoCommand(this)));
-            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.D3 }, new InsertTime34Command(this)));
-            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.D4 }, new InsertTime44Command(this)));
-            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.D6 }, new InsertTime68Command(this)));
+            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.C }, new InsertClefTrebleCommand(this)));
+            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.T }, new InsertTempoCommand(this)));
+            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D3 }, new InsertTime34Command(this)));
+            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D4 }, new InsertTime44Command(this)));
+            shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D6 }, new InsertTime68Command(this)));
 
             //Command<MainViewModel> baa = new Command<MainViewModel>(this);
         }
 
-        public void SaveLilypond()
+        public ICommand SaveAsCommand => new GalaSoft.MvvmLight.CommandWpf.RelayCommand(() =>
         {
-            Console.WriteLine("Save lilypond");
+            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid|Lilypond|*.ly|PDF|*.pdf" };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string extension = Path.GetExtension(saveFileDialog.FileName);
+                if (extension.EndsWith(".mid"))
+                {
+                    SaveMidi(saveFileDialog.FileName);
+                }
+                else if (extension.EndsWith(".ly"))
+                {
+                    SaveLilypond(saveFileDialog.FileName);
+                }
+                else if (extension.EndsWith(".pdf"))
+                {
+                    //_musicLoader.SaveToPDF(saveFileDialog.FileName);
+                }
+                else
+                {
+                    MessageBox.Show($"Extension {extension} is not supported.");
+                }
+                _stateMachine.ChangeState(new IdleState());
+            }
+        });
+
+        public void SaveLilypond(string filename = "")
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Lilypond|*.ly" };
+            if (filename != "" || saveFileDialog.ShowDialog() == true)
+            {
+                if (filename == "")
+                    filename = saveFileDialog.FileName;
+                
+                var lily = new LilyFileLoader();
+                lily.Save(filename, _musicLoader.Music);
+            }
         }
 
-        public void SaveMidi()
+        public void SaveMidi(string filename = "")
         {
-            Console.WriteLine("Save Midi");
+            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Midi|*.mid" };
+            if (filename != "" || saveFileDialog.ShowDialog() == true)
+            {
+                if (filename == "")
+                    filename = saveFileDialog.FileName;
+
+                var midi = new MidiFileLoader();
+                midi.Save(filename,_musicLoader.Music);
+            }
         }
 
         public void SavePDF()
@@ -71,7 +118,6 @@ namespace DPA_Musicsheets.ViewModels
             Console.WriteLine("Save PDF");
 
         }
-
         public void Open()
         {
             OpenFileCommand.Execute(null);
@@ -94,6 +140,7 @@ namespace DPA_Musicsheets.ViewModels
         public ICommand OnLostFocusCommand => new RelayCommand(() =>
         {
             Console.WriteLine("Maingrid Lost focus");
+            PressedKeys.Clear();
         });
 
         List<Key> PressedKeys = new List<Key>();
