@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace DPA_Musicsheets.ViewModels
@@ -27,19 +29,16 @@ namespace DPA_Musicsheets.ViewModels
         /// The current state can be used to display some text.
         /// "Rendering..." is a text that will be displayed for example.
         /// </summary>
-        private string _currentState;
-        public string CurrentState
-        {
-            get { return _currentState; }
-            set { _currentState = value; RaisePropertyChanged(() => CurrentState); }
-        }
+
+        public string CurrentState => _stateMachine.State.GetDescription();
 
         private MusicLoader _musicLoader;
-
-        public MainViewModel(MusicLoader musicLoader)
+        private StateMachine.StateMachine _stateMachine;
+        public MainViewModel(MusicLoader musicLoader, StateMachine.StateMachine stateMachine)
         {
-            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer?
             _musicLoader = musicLoader;
+            _stateMachine = stateMachine;
+            _stateMachine.StateChanged += (sender, args) => { RaisePropertyChanged(() => CurrentState);};
             FileName = @"Files/Alle-eendjes-zwemmen-in-het-water.mid";
         }
 
@@ -63,19 +62,31 @@ namespace DPA_Musicsheets.ViewModels
             Console.WriteLine("Maingrid Lost focus");
         });
 
+        List<Key> PressedKeys = new List<Key>();
+
         public ICommand OnKeyDownCommand => new RelayCommand<KeyEventArgs>((e) =>
         {
+            if (!PressedKeys.Contains(e.Key))
+                PressedKeys.Add(e.Key);
+
             Console.WriteLine($"Key down: {e.Key}");
+            Console.Write("Pressed keys: ");
+            PressedKeys.ForEach(k => Console.Write($"{k} "));
+            Console.WriteLine();
         });
 
-        public ICommand OnKeyUpCommand => new RelayCommand(() =>
+        public ICommand OnKeyUpCommand => new RelayCommand<KeyEventArgs>((e) =>
         {
-            Console.WriteLine("Key Up");
+            Console.WriteLine($"Key up: {e.Key}");
+            PressedKeys.Remove(e.Key);
+            Console.Write("Pressed keys: ");
+            PressedKeys.ForEach(k => Console.Write($"{k} "));
+            Console.WriteLine();
         });
 
-        public ICommand OnWindowClosingCommand => new RelayCommand(() =>
+        public ICommand OnWindowClosingCommand => new RelayCommand<CancelEventArgs>((args) =>
         {
-            ViewModelLocator.Cleanup();
+            _stateMachine.State.HandleClose(args);
         });
         #endregion Focus and key commands, these can be used for implementing hotkeys
     }

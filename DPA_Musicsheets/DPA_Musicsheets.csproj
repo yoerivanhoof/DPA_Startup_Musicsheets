@@ -137,6 +137,12 @@
     <Compile Include="MusicDomain\Symbols\SequenceEnd.cs" />
     <Compile Include="MusicDomain\Symbols\SequenceStart.cs" />
     <Compile Include="MusicDomain\Symbols\TimeSignature.cs" />
+    <Compile Include="StateMachine\IdleState.cs" />
+    <Compile Include="StateMachine\RenderingState.cs" />
+    <Compile Include="StateMachine\State.cs" />
+    <Compile Include="StateMachine\StateChangedEventArgs.cs" />
+    <Compile Include="StateMachine\StateMachine.cs" />
+    <Compile Include="StateMachine\UnsavedChangesState.cs" />
     <Compile Include="ViewModels\MidiPlayerViewModel.cs" />
     <Compile Include="ViewModels\StaffsViewModel.cs" />
     <Compile Include="Views\MidiPlayerCtrl.xaml.cs">

@@ -11,13 +11,13 @@ using System.Windows.Input;
 using DPA_Musicsheets.Memento;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.Loaders;
+using DPA_Musicsheets.StateMachine;
 
 namespace DPA_Musicsheets.ViewModels
 {
     public class LilypondViewModel : ViewModelBase
     {
         private MusicLoader _musicLoader;
-        private MainViewModel _mainViewModel { get; set; }
 
         private string _text;
         private string _previousText;
@@ -50,6 +50,7 @@ namespace DPA_Musicsheets.ViewModels
                 if (!_waitingForRender && !_textChangedByLoad)
                 {
                     _previousText = _text;
+                    _textChanged = true;
                 }
                 _text = value;
                 RaisePropertyChanged(() => LilypondText);
@@ -57,20 +58,20 @@ namespace DPA_Musicsheets.ViewModels
         }
 
         private bool _textChangedByLoad = false;
+        private bool _textChanged = false;
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private bool _waitingForRender = false;
-
-        public LilypondViewModel(MainViewModel mainViewModel, MusicLoader musicLoader)
+        private StateMachine.StateMachine _stateMachine;
+        public LilypondViewModel(MusicLoader musicLoader, StateMachine.StateMachine stateMachine)
         {
-            _mainViewModel = mainViewModel;
             _musicLoader = musicLoader;
             _musicLoader.MusicChanged += (sender, args) =>
             {
                 _text = new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music);
                 LilypondTextLoaded(_text);
             };
-            
+            _stateMachine = stateMachine;
             _text = "Your lilypond text will appear here.";
         }
 
@@ -91,8 +92,8 @@ namespace DPA_Musicsheets.ViewModels
             {
                 _waitingForRender = true;
                 _lastChange = DateTime.Now;
-
-                _mainViewModel.CurrentState = "Rendering...";
+                
+                _stateMachine.ChangeState(new RenderingState());
 
                 Task.Delay(MILLISECONDS_BEFORE_CHANGE_HANDLED).ContinueWith((task) =>
                 {
@@ -102,7 +103,15 @@ namespace DPA_Musicsheets.ViewModels
                         UndoCommand.RaiseCanExecuteChanged();
 
                         _musicLoader.UpdateMusic(new LilyConverter(new MusicBuilder()).ConvertLilyToMusic(LilypondText));
-                        _mainViewModel.CurrentState = "";
+
+                        if (_textChanged)
+                        {
+                            _stateMachine.ChangeState(new UnsavedChangesState());
+                        }
+                        else
+                        {
+                            _stateMachine.ChangeState(new IdleState());
+                        }
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
             }
@@ -156,6 +165,9 @@ namespace DPA_Musicsheets.ViewModels
                 {
                     MessageBox.Show($"Extension {extension} is not supported.");
                 }
+
+                _textChanged = false;
+                _stateMachine.ChangeState(new IdleState());
             }
         });
         #endregion Commands for buttons like Undo, Redo and SaveAs
