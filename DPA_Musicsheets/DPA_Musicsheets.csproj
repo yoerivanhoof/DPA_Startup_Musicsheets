@@ -147,7 +147,6 @@
     <Compile Include="Shortcuts\SaveMidiCommand.cs" />
     <Compile Include="Shortcuts\SavePDFCommand.cs" />
     <Compile Include="Shortcuts\ShortcutHandler.cs" />
-    <Compile Include="Shortcuts\TestCommand.cs" />
     <Compile Include="StateMachine\IdleState.cs" />
     <Compile Include="StateMachine\RenderingState.cs" />
     <Compile Include="StateMachine\State.cs" />
