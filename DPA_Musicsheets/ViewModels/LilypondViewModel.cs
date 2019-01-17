@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace DPA_Musicsheets.ViewModels
     {
         private MusicLoader _musicLoader;
         private TextMementoCaretaker _mementoCaretaker = new TextMementoCaretaker(new TextMemento("Your lilypond text will appear here."));
-
+        private List<TextMemento> _bookmarks;
         /// <summary>
         /// This text will be in the textbox.
         /// It can be filled either by typing or loading a file so we only want to set previoustext when it's caused by typing.
@@ -33,14 +34,13 @@ namespace DPA_Musicsheets.ViewModels
             set
             {
                 _mementoCaretaker.AddMemento(new TextMemento(value));
-                _textChanged = true;
                 
                 RaisePropertyChanged(() => LilypondText);
             }
         }
 
+        private bool _textChangedByLoad = false;
         private bool _textChangedByUndoRedo = false;
-        private bool _textChanged = false;
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private StateMachine.StateMachine _stateMachine;
@@ -52,8 +52,17 @@ namespace DPA_Musicsheets.ViewModels
             _musicLoader.MusicChanged += (sender, args) =>
             {
                 if (!_textChangedByUndoRedo)
-                   _mementoCaretaker.AddMemento(new TextMemento(new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music)));
-                RaisePropertyChanged(() => LilypondText);
+                {
+                    _textChangedByLoad = true;
+                    if (!args.Update)
+                        _mementoCaretaker.Clear();
+                    _mementoCaretaker.AddMemento(
+                        new TextMemento(new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music)));
+                    if (!args.Update)
+                        _bookmarks = new List<TextMemento> { new TextMemento(LilypondText), new TextMemento(LilypondText), new TextMemento(LilypondText) };
+                    RaisePropertyChanged(() => LilypondText);
+                    _textChangedByLoad = false;
+                }
             };
             _stateMachine = stateMachine;
         }
@@ -63,6 +72,9 @@ namespace DPA_Musicsheets.ViewModels
         /// </summary>
         public ICommand TextChangedCommand => new RelayCommand<TextChangedEventArgs>((args) =>
         {
+            if (_textChangedByLoad)
+                return;
+
             // If we were typing, we need to do things.
             _lastChange = DateTime.Now;
             
@@ -76,14 +88,7 @@ namespace DPA_Musicsheets.ViewModels
 
                     _musicLoader.UpdateMusic(new LilyConverter(new MusicBuilder()).ConvertLilyToMusic(LilypondText));
 
-                    if (_textChanged)
-                    {
-                        _stateMachine.ChangeState(new UnsavedChangesState());
-                    }
-                    else
-                    {
-                        _stateMachine.ChangeState(new IdleState());
-                    }
+                    _stateMachine.ChangeState(new UnsavedChangesState());
 
                     _textChangedByUndoRedo = false;
                 }
@@ -108,9 +113,7 @@ namespace DPA_Musicsheets.ViewModels
 
         public ICommand SelectionChangedCommand => new RelayCommand<RoutedEventArgs>((args) =>
         {
-            
-                _insertionIndex = ((TextBox) args.Source).CaretIndex; //index for shortcuts
-            
+            _insertionIndex = ((TextBox) args.Source).CaretIndex; //index for shortcuts         
         });
 
 
@@ -156,10 +159,21 @@ namespace DPA_Musicsheets.ViewModels
                     MessageBox.Show($"Extension {extension} is not supported.");
                 }
 
-                _textChanged = false;
                 _stateMachine.ChangeState(new IdleState());
             }
         });
+
+        public ICommand SaveBookmarkCommand => new RelayCommand<int>((arg) =>
+            {
+                _bookmarks[arg] = _mementoCaretaker.Memento;
+            });
+        public ICommand LoadBookmarkCommand => new RelayCommand<int>((arg) =>
+        {
+            _textChangedByUndoRedo = true;
+            _mementoCaretaker.AddMemento(_bookmarks[arg]);
+            RaisePropertyChanged(() => LilypondText);
+        });
+
         #endregion Commands for buttons like Undo, Redo and SaveAs
     }
 }

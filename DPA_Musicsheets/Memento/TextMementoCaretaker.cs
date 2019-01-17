@@ -55,5 +55,11 @@ namespace DPA_Musicsheets.Memento
                 _currentIndex = nextIndex;
             return _mementos[_currentIndex];
         }
+
+        public void Clear()
+        {
+            _mementos.RemoveRange(1, _mementos.Count - 1);
+            _currentIndex = 0;
+        }
     }
 }
