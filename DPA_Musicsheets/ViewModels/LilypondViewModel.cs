@@ -91,6 +91,14 @@ namespace DPA_Musicsheets.ViewModels
             }
         });
 
+        public ICommand SelectionChangedCommand => new RelayCommand<RoutedEventArgs>((args) =>
+        {
+            if (!_textChangedByLoad)
+            {
+                var index = ((TextBox) args.Source).CaretIndex; //index for shortcuts
+            }
+        });
+
         #region Commands for buttons like Undo, Redo and SaveAs
         public RelayCommand UndoCommand => new RelayCommand(() =>
         {
