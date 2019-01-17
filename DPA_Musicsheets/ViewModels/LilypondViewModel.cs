@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DPA_Musicsheets.Memento;
 using DPA_Musicsheets.Builders;
+using DPA_Musicsheets.ChainOfResponsibility;
 using DPA_Musicsheets.Loaders;
 
 namespace DPA_Musicsheets.ViewModels
@@ -27,6 +28,12 @@ namespace DPA_Musicsheets.ViewModels
         public TextMemento CreateMemento()
         {
             return (new TextMemento(_text));
+        }
+
+
+        public void test()
+        {
+            Console.WriteLine("HAAAAAI");
         }
 
         public void SetMemento(TextMemento memento)
@@ -60,6 +67,7 @@ namespace DPA_Musicsheets.ViewModels
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private bool _waitingForRender = false;
+        private ShortcutHandler<LilypondViewModel> _shortcuts;
 
         public LilypondViewModel(MainViewModel mainViewModel, MusicLoader musicLoader)
         {
@@ -72,7 +80,19 @@ namespace DPA_Musicsheets.ViewModels
             };
             
             _text = "Your lilypond text will appear here.";
+
+            _shortcuts = new ShortcutHandler<LilypondViewModel>(new KeyGesture(Key.T,ModifierKeys.Control),new TestCommand(this) );
+
+
+
         }
+
+        private void MyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        
 
         public void LilypondTextLoaded(string text)
         {
@@ -115,6 +135,8 @@ namespace DPA_Musicsheets.ViewModels
                 var index = ((TextBox) args.Source).CaretIndex; //index for shortcuts
             }
         });
+
+        public static RoutedCommand MyCommand = new RoutedCommand();
 
         #region Commands for buttons like Undo, Redo and SaveAs
         public RelayCommand UndoCommand => new RelayCommand(() =>

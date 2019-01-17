@@ -24,5 +24,10 @@ namespace DPA_Musicsheets.Views
         {
             InitializeComponent();
         }
+
+        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

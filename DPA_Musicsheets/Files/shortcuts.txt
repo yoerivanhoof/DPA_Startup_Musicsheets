@@ -1,0 +1,9 @@
+ [contr+s] een bestand kunnen opslaan (als lilypondbestand) 
+ [contr+p] een bestand als PDF opslaan 
+ [contr+o] een bestand openen 
+ [contr+j] een clef treble invoegen op de huidige plek 
+ [contr+k] een tempo (speed) 4=120 invoegen op de huidige plek 
+ [contr+4] een time 4/4 invoegen op de huidige plek 
+ [contr+4] ook een time 4/4 invoegen op de huidige plek 
+ [contr+3] een time 3/4 invoegen op de huidige plek 
+ [contr+6] een time 6/8 invoegen op de huidige plek
