@@ -21,16 +21,10 @@ namespace DPA_Musicsheets.ViewModels
         private MusicLoader _musicLoader;
         private TextMementoCaretaker _mementoCaretaker = new TextMementoCaretaker(new TextMemento("Your lilypond text will appear here."));
         private List<TextMemento> _bookmarks;
-        /// <summary>
-        /// This text will be in the textbox.
-        /// It can be filled either by typing or loading a file so we only want to set previoustext when it's caused by typing.
-        /// </summary>
+
         public string LilypondText
         {
-            get
-            {
-                return _mementoCaretaker.Memento.text();
-            }
+            get => _mementoCaretaker.Memento.text();
             set
             {
                 _mementoCaretaker.AddMemento(new TextMemento(value));
