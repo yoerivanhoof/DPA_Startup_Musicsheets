@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Sanford.Multimedia.Midi;
 using System;
+using DPA_Musicsheets.Builders;
+using DPA_Musicsheets.Loaders;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -47,8 +49,10 @@ namespace DPA_Musicsheets.ViewModels
                 _running = false;
             };
 
-            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer?
-            musicLoader.MidiPlayerViewModel = this;
+            musicLoader.MusicChanged += (sender, args) =>
+            {
+                MidiSequence = new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(args.Music);
+            };
         }
 
         private void UpdateButtons()

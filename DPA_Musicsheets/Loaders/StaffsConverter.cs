@@ -10,8 +10,12 @@ namespace DPA_Musicsheets.Loaders
     {
         public List<MusicalSymbol> ConvertMusicToSymbols(Music music)
         {
+            var symbols = new List<MusicalSymbol>();
+            int clefLine = music.Clef == MusicDomain.Symbols.Clef.TREBLE ? 2 : 4;
+            symbols.Add(new Clef((ClefType)(int)music.Clef, clefLine));
             var visitor = new StaffsVisitor();
-            return music.Symbols.Select(s => s.Accept(visitor)).ToList();
+            symbols.AddRange(music.Symbols.Select(s => s.Accept(visitor)));
+            return symbols;
         }
     }
 }

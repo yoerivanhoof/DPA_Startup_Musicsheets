@@ -2,7 +2,7 @@
 {
     public enum Clef
     {
-        TREBLE,
-        BASS
+        TREBLE = 0,
+        BASS = 2
     }
 }

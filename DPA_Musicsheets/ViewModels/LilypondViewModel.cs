@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DPA_Musicsheets.Builders;
+using DPA_Musicsheets.Loaders;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -48,11 +50,13 @@ namespace DPA_Musicsheets.ViewModels
 
         public LilypondViewModel(MainViewModel mainViewModel, MusicLoader musicLoader)
         {
-            // TODO: Can we use some sort of eventing system so the managers layer doesn't have to know the viewmodel layer and viewmodels don't know each other?
-            // And viewmodels don't 
             _mainViewModel = mainViewModel;
             _musicLoader = musicLoader;
-            _musicLoader.LilypondViewModel = this;
+            _musicLoader.MusicChanged += (sender, args) =>
+            {
+                _text = new LilyConverter(new MusicBuilder()).ConvertMusicToLily(args.Music);
+                LilypondTextLoaded(_text);
+            };
             
             _text = "Your lilypond text will appear here.";
         }
@@ -84,7 +88,7 @@ namespace DPA_Musicsheets.ViewModels
                         _waitingForRender = false;
                         UndoCommand.RaiseCanExecuteChanged();
 
-                        _musicLoader.LoadLilypondIntoWpfStaffsAndMidi(LilypondText);
+                        _musicLoader.UpdateMusic(new LilyConverter(new MusicBuilder()).ConvertLilyToMusic(LilypondText));
                         _mainViewModel.CurrentState = "";
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext()); // Request from main thread.
