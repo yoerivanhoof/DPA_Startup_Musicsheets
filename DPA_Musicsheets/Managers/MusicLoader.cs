@@ -25,13 +25,13 @@ namespace DPA_Musicsheets.Managers
             loader.Load(fileName);
 
             Music = loader.GetMusic();
-            MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music));
+            MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music, false));
         }
 
         public void UpdateMusic(Music music)
         {
             Music = music;
-            MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music));
+            MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music, true));
         }
 
     }

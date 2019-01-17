@@ -12,6 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
@@ -19,9 +20,18 @@
             <Button Command="{Binding RedoCommand }" Content="Redo" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="43"/>
             
         </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Command="{Binding SaveBookmarkCommand }" CommandParameter="0" Content="S1" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+            <Button Command="{Binding LoadBookmarkCommand }" CommandParameter="0" Content="L1" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+            <Button Command="{Binding SaveBookmarkCommand }" CommandParameter="1" Content="S2" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+            <Button Command="{Binding LoadBookmarkCommand }" CommandParameter="1" Content="L2" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+            <Button Command="{Binding SaveBookmarkCommand }" CommandParameter="2" Content="S3" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+            <Button Command="{Binding LoadBookmarkCommand }" CommandParameter="2" Content="L3" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="40"/>
+        </StackPanel>
+            
         <TextBox TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"  CaretBrush="Blue" 
             VerticalAlignment="Stretch" Text="{Binding LilypondText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="5"
-            Grid.Row="1" Grid.Column="1">
+            Grid.Row="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged" >
                     <command:EventToCommand Command="{Binding SelectionChangedCommand}" PassEventArgsToCommand="True"  />
@@ -32,7 +42,4 @@
             </i:Interaction.Triggers>
         </TextBox>
     </Grid>
-    <UserControl.CommandBindings>
-
-    </UserControl.CommandBindings>
 </UserControl>
