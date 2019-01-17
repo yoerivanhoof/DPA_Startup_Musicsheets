@@ -94,7 +94,6 @@ namespace DPA_Musicsheets.Loaders
                                     noteBuilder.Init();
                                     noteBuilder.SetPitch((Pitch)(channelMessage.Data1 % 12));
                                     noteBuilder.SetOctave(channelMessage.Data1 / 12 - 1);
-                                    //todo octave
                                     int distance = channelMessage.Data1 - previousMidiKey;
 
                                     ModifierToken token = ModifierToken.NONE;

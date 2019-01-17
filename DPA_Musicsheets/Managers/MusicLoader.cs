@@ -1,8 +1,6 @@
-﻿
 using DPA_Musicsheets.Models;
 using DPA_Musicsheets.ViewModels;
 using PSAMControlLibrary;
-using PSAMWPFControlLibrary;
 using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
@@ -11,11 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.Loaders;
-using DPA_Musicsheets.MusicDomain;
-using DPA_Musicsheets.Visitors;
 
 namespace DPA_Musicsheets.Managers
 {
@@ -60,12 +55,17 @@ namespace DPA_Musicsheets.Managers
             var music = loader.GetMusic();
 
             var sequence = new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(music);
-            
-            
+                        
+                        
 
             var staffs = new StaffsConverter().ConvertMusicToSymbols(music);
 
             StaffsViewModel.SetStaffs(staffs);
+            
+            LilyConverter lilyConverter = new LilyConverter(new MusicBuilder());
+            LilypondViewModel.LilypondTextLoaded(lilyConverter.ConvertMusicToLily(music));
+
+            MidiPlayerViewModel.MidiSequence = sequence;
 
             //if (Path.GetExtension(fileName).EndsWith(".mid"))
             //{
@@ -78,7 +78,6 @@ namespace DPA_Musicsheets.Managers
             //}
             // if (Path.GetExtension(fileName).EndsWith(".ly"))
             //{
-
 
             //    StringBuilder sb = new StringBuilder();
             //    foreach (var line in File.ReadAllLines(fileName))
