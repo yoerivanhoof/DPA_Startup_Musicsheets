@@ -1,5 +1,4 @@
 using System;
-using Sanford.Multimedia.Midi;
 using System.Diagnostics;
 using System.IO;
 using DPA_Musicsheets.Builders;
@@ -38,9 +37,7 @@ namespace DPA_Musicsheets.Managers
         #region Saving to files
         internal void SaveToMidi(string fileName)
         {
-            Sequence sequence = new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(Music);
-
-            sequence.Save(fileName);
+            new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(Music).Save(fileName);
         }
 
         internal void SaveToLilypond(string fileName)
