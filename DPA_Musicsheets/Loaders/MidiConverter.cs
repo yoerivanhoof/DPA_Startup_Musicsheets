@@ -2,6 +2,7 @@
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
+using DPA_Musicsheets.Visitors;
 using Sanford.Multimedia.Midi;
 
 namespace DPA_Musicsheets.Loaders
@@ -148,6 +149,61 @@ namespace DPA_Musicsheets.Loaders
                     }
                 }
             }
+        }
+
+        public Sequence ConvertMusicToMidi(Music music)
+        {;
+            int beatNote = 4;
+
+            int absoluteTicks = 0;
+
+            Sequence sequence = new Sequence();
+
+            Track metaTrack = new Track();
+            sequence.Add(metaTrack);
+
+            // Calculate tempo
+            int speed = (60000000 / music.Tempo);
+            byte[] tempo = new byte[3];
+            tempo[0] = (byte)((speed >> 16) & 0xff);
+            tempo[1] = (byte)((speed >> 8) & 0xff);
+            tempo[2] = (byte)(speed & 0xff);
+            metaTrack.Insert(0 /* Insert at 0 ticks*/, new MetaMessage(MetaType.Tempo, tempo));
+
+            Track notesTrack = new Track();
+            sequence.Add(notesTrack);
+
+            var visitor = new MidiVisitor();
+            foreach (var symbol in music.Symbols)
+            {
+                var visitResult = symbol.Accept(visitor);
+                foreach (var item in visitResult)
+                {
+                    if (item.Value > 0)
+                    {
+                        double relationToQuartNote = beatNote / 4.0;
+                        double percentageOfBeatNote = (1.0 / beatNote) / item.Value;
+                        double deltaTicks = (sequence.Division / relationToQuartNote) / percentageOfBeatNote;
+                        absoluteTicks += (int)deltaTicks;
+                    }
+
+                    if (item.Key is ChannelMessage)
+                    {
+                        notesTrack.Insert(absoluteTicks, item.Key);
+                    }
+                    if (item.Key is MetaMessage)
+                    {
+                        metaTrack.Insert(absoluteTicks, item.Key);
+                    }
+                }
+            }
+
+            notesTrack.EndOfTrackOffset = 1;
+            metaTrack.EndOfTrackOffset = 1;
+
+            notesTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
+            metaTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
+            return sequence;
         }
 
         private NoteLengthInfo GetNoteLength(int absoluteTicks, int nextNoteAbsoluteTicks, int division, int beatNote, int beatsPerBar, out double percentageOfBar)

@@ -118,6 +118,7 @@
     <Compile Include="Loaders\LoaderFactory.cs" />
     <Compile Include="Loaders\MidiFileLoader.cs" />
     <Compile Include="Loaders\MidiConverter.cs" />
+    <Compile Include="Loaders\StaffsConverter.cs" />
     <Compile Include="Managers\MidiToLilyHelper.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Models\LilypondToken.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Visitors\LilyVisitor.cs" />
     <Compile Include="Visitors\MidiVisitor.cs" />
     <Compile Include="Visitors\SymbolVisitor.cs" />
+    <Compile Include="Visitors\StaffsVisitor.cs" />
     <Page Include="Views\MidiPlayerCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
