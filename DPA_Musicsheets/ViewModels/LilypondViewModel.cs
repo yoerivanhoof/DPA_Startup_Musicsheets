@@ -11,7 +11,6 @@ using System.Windows.Input;
 using DPA_Musicsheets.Memento;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.Loaders;
-using DPA_Musicsheets.Shortcuts;
 using DPA_Musicsheets.StateMachine;
 
 namespace DPA_Musicsheets.ViewModels
@@ -20,21 +19,6 @@ namespace DPA_Musicsheets.ViewModels
     {
         private MusicLoader _musicLoader;
         private TextMementoCaretaker _mementoCaretaker = new TextMementoCaretaker(new TextMemento("Your lilypond text will appear here."));
-
-        public void InsertClefTreble()
-        {
-
-        }
-
-        public void InsertTempo()
-        {
-
-        }
-
-        public void InsertTime(int first, int second)
-        {
-
-        }
 
         /// <summary>
         /// This text will be in the textbox.
@@ -60,6 +44,8 @@ namespace DPA_Musicsheets.ViewModels
         private DateTime _lastChange;
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private StateMachine.StateMachine _stateMachine;
+        private int _insertionIndex;
+
         public LilypondViewModel(MusicLoader musicLoader, StateMachine.StateMachine stateMachine)
         {
             _musicLoader = musicLoader;
@@ -105,14 +91,28 @@ namespace DPA_Musicsheets.ViewModels
             
         });
 
+        public void InsertClefTreble()
+        {
+            LilypondText = LilypondText.Insert(_insertionIndex, "\\clef treble");
+        }
+
+        public void InsertTempo()
+        {
+            LilypondText = LilypondText.Insert(_insertionIndex, "\\tempo 4=120");
+        }
+
+        public void InsertTime(int first, int second)
+        {
+            LilypondText = LilypondText.Insert(_insertionIndex, $"\\time {first}/{second}");
+        }
+
         public ICommand SelectionChangedCommand => new RelayCommand<RoutedEventArgs>((args) =>
         {
             
-                var index = ((TextBox) args.Source).CaretIndex; //index for shortcuts
+                _insertionIndex = ((TextBox) args.Source).CaretIndex; //index for shortcuts
             
         });
 
-        public static RoutedCommand MyCommand = new RoutedCommand();
 
         #region Commands for buttons like Undo, Redo and SaveAs
         public RelayCommand UndoCommand => new RelayCommand(() =>
