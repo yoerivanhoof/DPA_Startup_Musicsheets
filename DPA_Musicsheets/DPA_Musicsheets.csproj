@@ -121,6 +121,7 @@
     <Compile Include="Loaders\MidiConverter.cs" />
     <Compile Include="Loaders\StaffsConverter.cs" />
     <Compile Include="Managers\MidiToLilyHelper.cs" />
+    <Compile Include="Managers\MusicChangedEventArgs.cs" />
     <Compile Include="Managers\MusicLoader.cs" />
     <Compile Include="Memento\TextMemento.cs" />
     <Compile Include="Memento\TextMementoCaretaker.cs" />
