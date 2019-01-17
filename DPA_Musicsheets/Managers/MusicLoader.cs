@@ -1,8 +1,6 @@
-﻿
 using DPA_Musicsheets.Models;
 using DPA_Musicsheets.ViewModels;
 using PSAMControlLibrary;
-using PSAMWPFControlLibrary;
 using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
@@ -11,11 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using DPA_Musicsheets.Builders;
 using DPA_Musicsheets.Loaders;
-using DPA_Musicsheets.MusicDomain;
-using DPA_Musicsheets.Visitors;
 
 namespace DPA_Musicsheets.Managers
 {
@@ -59,7 +54,13 @@ namespace DPA_Musicsheets.Managers
             loader.Load(fileName);
             var music = loader.GetMusic();
 
-            var sequence = getMidiSequence(music);
+            var sequence = new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(music);
+                        
+                        
+
+            var staffs = new StaffsConverter().ConvertMusicToSymbols(music);
+
+            StaffsViewModel.SetStaffs(staffs);
             
             LilyConverter lilyConverter = new LilyConverter(new MusicBuilder());
             LilypondViewModel.LilypondTextLoaded(lilyConverter.ConvertMusicToLily(music));
@@ -78,7 +79,6 @@ namespace DPA_Musicsheets.Managers
             // if (Path.GetExtension(fileName).EndsWith(".ly"))
             //{
 
-
             //    StringBuilder sb = new StringBuilder();
             //    foreach (var line in File.ReadAllLines(fileName))
             //    {
@@ -95,65 +95,8 @@ namespace DPA_Musicsheets.Managers
 
             LoadLilypondIntoWpfStaffsAndMidi(LilypondViewModel.LilypondText);
             // var testSequence = GetSequenceFromWPFStaffs();
-
+            MidiPlayerViewModel.MidiSequence = sequence;
         }
-
-
-        private Sequence getMidiSequence(Music music)
-        {
-            int absoluteTicks = 0;
-
-            Sequence sequence = new Sequence();
-
-            Track metaTrack = new Track();
-            sequence.Add(metaTrack);
-
-            // Calculate tempo
-            int speed = (60000000 / music.Tempo);
-            byte[] tempo = new byte[3];
-            tempo[0] = (byte)((speed >> 16) & 0xff);
-            tempo[1] = (byte)((speed >> 8) & 0xff);
-            tempo[2] = (byte)(speed & 0xff);
-            metaTrack.Insert(0 /* Insert at 0 ticks*/, new MetaMessage(MetaType.Tempo, tempo));
-
-            Track notesTrack = new Track();
-            sequence.Add(notesTrack);
-
-            var visitor = new MidiVisitor();
-            foreach (var symbol in music.Symbols)
-            {
-                var visitResult = symbol.Accept(visitor);
-                foreach (var item in visitResult)
-                {
-                    if (item.Value > 0)
-                    {
-                        double relationToQuartNote = _beatNote / 4.0;
-                        double percentageOfBeatNote = (1.0 / _beatNote) / item.Value;
-                        double deltaTicks = (sequence.Division / relationToQuartNote) / percentageOfBeatNote;
-                        absoluteTicks += (int)deltaTicks;
-                    }
-
-                    if (item.Key is ChannelMessage)
-                    {
-                        notesTrack.Insert(absoluteTicks, item.Key);
-                    }
-                    if (item.Key is MetaMessage)
-                    {
-                        metaTrack.Insert(absoluteTicks, item.Key);
-                    }
-                }
-            }
-
-            notesTrack.EndOfTrackOffset = 1;
-            metaTrack.EndOfTrackOffset = 1;
-
-            notesTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
-            metaTrack.Insert(absoluteTicks, MetaMessage.EndOfTrackMessage);
-            return sequence;
-        }
-
-
-
 
         /// <summary>
         /// This creates WPF staffs and MIDI from Lilypond.
