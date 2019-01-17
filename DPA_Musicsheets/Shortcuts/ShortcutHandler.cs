@@ -1,15 +1,17 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 
-namespace DPA_Musicsheets.ChainOfResponsibility
+namespace DPA_Musicsheets.Shortcuts
 {
     public class ShortcutHandler <T>
     {
         private ShortcutHandler<T> _nextHandler;
-        private KeyGesture _keyGesture;
+        private List<Key> _keys;
         private Command<T> _command;
-        public ShortcutHandler(KeyGesture keyGesture,Command<T> command)
+        public ShortcutHandler(List<Key> keys,Command<T> command)
         {
-            _keyGesture = keyGesture;
+            _keys = keys;
             _command = command;
 
         }
@@ -26,15 +28,18 @@ namespace DPA_Musicsheets.ChainOfResponsibility
             }
         }
 
-        public void Handle(KeyGesture gesture)
+        public bool Handle(List<Key> gesture)
         {
-            if (gesture == _keyGesture)
+            var result1 = gesture.Except(_keys).Count();
+            var result2 = _keys.Except(gesture).Count();
+            if (result1 + result2 == 0)
             {
                 _command.Execute();
+                return true;
             }
             else
             {
-                _nextHandler?.Handle(gesture);
+                return _nextHandler != null && _nextHandler.Handle(gesture);
             }
         }
     }

@@ -162,6 +162,10 @@ namespace DPA_Musicsheets.Loaders
             sequence.Add(metaTrack);
 
             // Calculate tempo
+            if (music.Tempo <= 0)
+            {
+                music.Tempo = 1;
+            }
             int speed = (60000000 / music.Tempo);
             byte[] tempo = new byte[3];
             tempo[0] = (byte)((speed >> 16) & 0xff);

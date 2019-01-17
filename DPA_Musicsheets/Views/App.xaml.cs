@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-namespace MidiPlayerTest
+namespace DPA_Musicsheets.Views
 {
     /// <summary>
     /// Interaction logic for App.xaml

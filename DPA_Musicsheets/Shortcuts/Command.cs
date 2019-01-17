@@ -1,4 +1,4 @@
-﻿namespace DPA_Musicsheets.ChainOfResponsibility
+﻿namespace DPA_Musicsheets.Shortcuts
 {
     public abstract class Command<T>
     {

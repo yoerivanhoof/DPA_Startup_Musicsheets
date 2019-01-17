@@ -32,4 +32,7 @@
             </i:Interaction.Triggers>
         </TextBox>
     </Grid>
+    <UserControl.CommandBindings>
+
+    </UserControl.CommandBindings>
 </UserControl>

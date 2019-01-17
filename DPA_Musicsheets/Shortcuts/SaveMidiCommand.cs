@@ -2,15 +2,15 @@
 
 namespace DPA_Musicsheets.Shortcuts
 {
-    public class TestCommand : Command<LilypondViewModel>
+    public class SaveMidiCommand:Command<MainViewModel>
     {
-        public TestCommand(LilypondViewModel receiver) : base(receiver)
+        public SaveMidiCommand(MainViewModel receiver) : base(receiver)
         {
         }
 
         public override void Execute()
         {
-            _receiver.test();
+            _receiver.SaveMidi();
         }
     }
 }

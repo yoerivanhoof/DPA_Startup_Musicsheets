@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
 using PSAMControlLibrary;
