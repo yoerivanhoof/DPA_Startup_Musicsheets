@@ -109,7 +109,9 @@ namespace DPA_Musicsheets.Loaders
                     {
                         var builder = new NoteBuilder();
                         builder.Init();
-                        builder.SetPitch((Pitch)Enum.Parse(typeof(Pitch), note.Groups["note"].Value.ToUpper()));
+                        Pitch p;
+                        Enum.TryParse(note.Groups["note"].Value.ToUpper(), out p);
+                        builder.SetPitch(p);
                         builder.SetDuration(int.Parse(note.Groups["duration"].Value));
 
                         if (note.Groups["extended"].Length > 0)
