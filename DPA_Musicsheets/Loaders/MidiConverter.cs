@@ -180,6 +180,7 @@ namespace DPA_Musicsheets.Loaders
             sequence.Add(notesTrack);
 
             var visitor = new MidiVisitor();
+
             foreach (var symbol in music.Symbols)
             {
                 var visitResult = symbol.Accept(visitor);
