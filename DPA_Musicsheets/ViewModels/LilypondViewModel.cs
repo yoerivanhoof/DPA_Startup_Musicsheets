@@ -37,6 +37,7 @@ namespace DPA_Musicsheets.ViewModels
         private static int MILLISECONDS_BEFORE_CHANGE_HANDLED = 1500;
         private StateMachine.StateMachine _stateMachine;
         private int _insertionIndex;
+        public bool CanBookmark { get; set; } = false;
 
         public LilypondViewModel(MusicLoader musicLoader, StateMachine.StateMachine stateMachine)
         {
@@ -54,6 +55,8 @@ namespace DPA_Musicsheets.ViewModels
                         _bookmarks = new List<TextMemento> { new TextMemento(LilypondText), new TextMemento(LilypondText), new TextMemento(LilypondText) };
                     RaisePropertyChanged(() => LilypondText);
                     _textChangedByLoad = false;
+                    CanBookmark = true;
+                    RaisePropertyChanged(() => CanBookmark);
                 }
             };
             _stateMachine = stateMachine;
@@ -127,17 +130,19 @@ namespace DPA_Musicsheets.ViewModels
         }, () => _mementoCaretaker.CanRedo());
 
 
+        public RelayCommand<int> SaveBookmarkCommand => new RelayCommand<int>((arg) =>
+        {
+            _bookmarks[arg] = _mementoCaretaker.Memento;
+        });
 
-        public ICommand SaveBookmarkCommand => new RelayCommand<int>((arg) =>
-            {
-                _bookmarks[arg] = _mementoCaretaker.Memento;
-            });
-        public ICommand LoadBookmarkCommand => new RelayCommand<int>((arg) =>
+        public RelayCommand<int> LoadBookmarkCommand => new RelayCommand<int>((arg) =>
         {
             _textChangedByUndoRedo = true;
             _mementoCaretaker.AddMemento(_bookmarks[arg]);
             RaisePropertyChanged(() => LilypondText);
         });
+
+
         #endregion Commands for buttons like Undo, Redo and SaveAs
     }
 }
