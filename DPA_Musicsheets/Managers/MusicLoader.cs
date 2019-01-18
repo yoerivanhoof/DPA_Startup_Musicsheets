@@ -44,7 +44,8 @@ namespace DPA_Musicsheets.Managers
         public void UpdateMusic(Music music)
         {
             Music = music;
-            MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music, true));
+            if(music.Symbols != null)
+                MusicChanged?.Invoke(this, new MusicChangedEventArgs(Music, true));
         }
 
     }

@@ -51,6 +51,7 @@ namespace DPA_Musicsheets.ViewModels
 
             musicLoader.MusicChanged += (sender, args) =>
             {
+
                 MidiSequence = new MidiConverter(new MusicBuilder()).ConvertMusicToMidi(args.Music);
             };
         }
