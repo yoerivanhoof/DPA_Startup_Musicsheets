@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -77,6 +78,7 @@ namespace DPA_Musicsheets.ViewModels
                 }
                 else if (extension.EndsWith(".pdf"))
                 {
+                    SavePDF(saveFileDialog.FileName);
                     //_musicLoader.SaveToPDF(saveFileDialog.FileName);
                 }
                 else
@@ -113,9 +115,18 @@ namespace DPA_Musicsheets.ViewModels
             }
         }
 
-        public void SavePDF()
+        public void SavePDF(string filename = "")
         {
-            Console.WriteLine("Save PDF");
+            SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "PDF|*.pdf" };
+            if (filename != "" || saveFileDialog.ShowDialog() == true)
+            {
+                if (filename == "")
+                    filename = saveFileDialog.FileName;
+
+                var lily = new LilyFileLoader();
+                lily.SavePDF(filename, _musicLoader.Music);
+            }
+
 
         }
         public void Open()

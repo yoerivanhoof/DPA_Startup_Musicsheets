@@ -148,6 +148,9 @@ namespace DPA_Musicsheets.Loaders
                     }
                 }
             }
+            var sequenceEndBuilder = new SequenceEndBuilder();
+            sequenceEndBuilder.Init();
+            _musicBuilder.AddSymbol(sequenceEndBuilder.GetSequenceEnd());
         }
 
         public Sequence ConvertMusicToMidi(Music music)
