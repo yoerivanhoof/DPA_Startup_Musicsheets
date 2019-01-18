@@ -20,9 +20,10 @@ namespace DPA_Musicsheets.Loaders
 
         public override void Save(string fileName, Music music)
         {
-            
-                new MidiConverter(MusicBuilder).ConvertMusicToMidi(music).Save(fileName);
-            
+            if (music == null)
+                return;
+
+            new MidiConverter(MusicBuilder).ConvertMusicToMidi(music).Save(fileName);       
         }
     }
 }

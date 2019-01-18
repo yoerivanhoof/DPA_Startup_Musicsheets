@@ -5,14 +5,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using DPA_Musicsheets.Loaders;
 using DPA_Musicsheets.Shortcuts;
 using DPA_Musicsheets.StateMachine;
-using Microsoft.Practices.ServiceLocation;
 
 namespace DPA_Musicsheets.ViewModels
 {
@@ -58,8 +56,6 @@ namespace DPA_Musicsheets.ViewModels
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D3 }, new InsertTime34Command(this)));
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D4 }, new InsertTime44Command(this)));
             shortcuts.SetNextHandler(new ShortcutHandler<MainViewModel>(new List<Key>() { Key.LeftCtrl, Key.I, Key.D6 }, new InsertTime68Command(this)));
-
-            //Command<MainViewModel> baa = new Command<MainViewModel>(this);
         }
 
         public ICommand SaveAsCommand => new GalaSoft.MvvmLight.CommandWpf.RelayCommand(() =>
@@ -79,7 +75,6 @@ namespace DPA_Musicsheets.ViewModels
                 else if (extension.EndsWith(".pdf"))
                 {
                     SavePDF(saveFileDialog.FileName);
-                    //_musicLoader.SaveToPDF(saveFileDialog.FileName);
                 }
                 else
                 {
@@ -126,8 +121,7 @@ namespace DPA_Musicsheets.ViewModels
                 var lily = new LilyFileLoader();
                 lily.SavePDF(filename, _musicLoader.Music);
             }
-
-
+            
         }
         public void Open()
         {

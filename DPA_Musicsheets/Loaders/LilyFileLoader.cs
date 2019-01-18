@@ -19,11 +19,17 @@ namespace DPA_Musicsheets.Loaders
 
         public override void Save(string fileName, Music music)
         {
+            if (music == null)
+                return;
+
             File.WriteAllText(fileName, new LilyConverter(MusicBuilder).ConvertMusicToLily(music));
         }
 
         public void SavePDF(string filename, Music music)
         {
+            if (music == null)
+                return;
+
             string tmpFileName = $"{filename}-tmp.ly";
             Save(tmpFileName, music);
             string lilypondLocation = @"C:\Program Files (x86)\LilyPond\usr\bin\lilypond.exe";

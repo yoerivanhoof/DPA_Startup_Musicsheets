@@ -78,7 +78,7 @@ namespace DPA_Musicsheets.Loaders
                                             var barlineBuilder = new BarlineBuilder();
                                             barlineBuilder.Init();
                                             _musicBuilder.AddSymbol(barlineBuilder.GetBarline());
-                                            percentageOfBar = percentageOfBar - 1;
+                                            percentageOfBarReached -= 1;
                                         }
                                     }
                                     break;
@@ -163,7 +163,7 @@ namespace DPA_Musicsheets.Loaders
 
             Track metaTrack = new Track();
             sequence.Add(metaTrack);
-
+            
             // Calculate tempo
             if (music.Tempo <= 0)
             {

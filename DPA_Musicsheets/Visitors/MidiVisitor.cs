@@ -19,6 +19,7 @@ namespace DPA_Musicsheets.Visitors
 
             List<string> notesOrderWithCrosses = new List<string> { "c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b" };
             // Calculate duration
+            if (symbol.Duration <= 0) symbol.Duration++;
             double absoluteLength = 1.0 / symbol.Duration;
             absoluteLength += (absoluteLength / 2.0) * symbol.Modifier.Count;
 
