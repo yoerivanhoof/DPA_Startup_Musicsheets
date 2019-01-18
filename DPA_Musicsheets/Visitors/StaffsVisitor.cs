@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DPA_Musicsheets.MusicDomain;
 using DPA_Musicsheets.MusicDomain.Symbols;
 using PSAMControlLibrary;
@@ -23,7 +24,6 @@ namespace DPA_Musicsheets.Visitors
             }
             else
             {
-                //todo different tie types?
                 int alter = 0;
                 switch (symbol.Modifier.Token)
                 {
@@ -43,12 +43,12 @@ namespace DPA_Musicsheets.Visitors
 
         public override MusicalSymbol VisitSequenceStartSymbol(SequenceStart symbol)
         {
-            return new PSAMControlLibrary.Barline { RepeatSign = RepeatSignType.Backward }; //todo:repeatnumber?
+            return new PSAMControlLibrary.Barline { RepeatSign = RepeatSignType.Backward };
         }
 
         public override MusicalSymbol VisitSequenceEndSymbol(SequenceEnd symbol)
         {
-            return new PSAMControlLibrary.Barline { RepeatSign = RepeatSignType.Backward };//todo:repeatnumber?
+            return new PSAMControlLibrary.Barline { RepeatSign = RepeatSignType.Backward };
         }
 
         public override MusicalSymbol VisitTimeSignatureSymbol(TimeSignature symbol)
