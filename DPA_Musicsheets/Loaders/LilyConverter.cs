@@ -159,21 +159,18 @@ namespace DPA_Musicsheets.Loaders
                     modifier += '\'';
                 }
             }
+
+            var symbols = music.Symbols.ToList();
             returnstring += $"\\relative {music.Key.Pitch.ToString().ToLower()}{modifier} {{ \n";
-            music.Symbols.Remove(music.Symbols.First());
-
+            symbols.Remove(symbols.First());
             returnstring += $"\\clef {music.Clef.ToString().ToLower()} \n";
-
             returnstring += $"\\tempo 4={music.Tempo.ToString()} \n";
-
             
 
-            foreach (IMusicSymbol musicSymbol in music.Symbols)
+            foreach (IMusicSymbol musicSymbol in symbols)
             {
                 LilyVisitor visitor = new LilyVisitor();
                 returnstring += musicSymbol.Accept(visitor).ToLower();
-
-
             }
 
             return returnstring;

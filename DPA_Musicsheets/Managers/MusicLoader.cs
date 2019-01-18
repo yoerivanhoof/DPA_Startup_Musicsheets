@@ -9,7 +9,12 @@ namespace DPA_Musicsheets.Managers
 {
     public class MusicLoader
     {
-        public Music Music { get; private set; }
+        private Music _music;
+        public Music Music
+        {
+            get { return _music; }
+            private set { _music = value; }
+        }
 
         public event EventHandler<MusicChangedEventArgs> MusicChanged; 
 
